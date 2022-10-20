@@ -1,0 +1,197 @@
+Branch TrdTracks (id=2506205362834794211) consists of:
+Floating fields:
+Id        Name                Info                                              
+8         chi2_ov_ndf         chi2 divided by NDF of the track fit              
+0         energy_loss_0       keV(?), Energy loss per TRD station               
+1         energy_loss_1       keV(?), Energy loss per TRD station               
+2         energy_loss_2       keV(?), Energy loss per TRD station               
+3         energy_loss_3       keV(?), Energy loss per TRD station               
+-3        eta                 pseudorapidity                                    
+-7        p                   GeV/c                                             
+-2        pT                  GeV/c                                             
+9         pT_out              Momentum at last point (?)                        
+10        p_out               Momentum at last point (?)                        
+-1        phi                 azimuthal angle                                   
+4         pid_like_e          Probability to be a given particle specie         
+6         pid_like_k          Probability to be a given particle specie         
+7         pid_like_p          Probability to be a given particle specie         
+5         pid_like_pi         Probability to be a given particle specie         
+-4        px                  GeV/c                                             
+-5        py                  GeV/c                                             
+-6        pz                  GeV/c                                             
+Integer fields:
+Id        Name                Info                                              
+0         n_hits              Number of hits                                    
+Boolean fields:
+
+Branch VtxTracks (id=3142039925389476351) consists of:
+Floating fields:
+Id        Name                Info                                              
+0         chi2                chi2 of the track fit                             
+21        cov1                covarience matrix                                 
+30        cov10               covarience matrix                                 
+31        cov11               covarience matrix                                 
+32        cov12               covarience matrix                                 
+33        cov13               covarience matrix                                 
+34        cov14               covarience matrix                                 
+35        cov15               covarience matrix                                 
+22        cov2                covarience matrix                                 
+23        cov3                covarience matrix                                 
+24        cov4                covarience matrix                                 
+25        cov5                covarience matrix                                 
+26        cov6                covarience matrix                                 
+27        cov7                covarience matrix                                 
+28        cov8                covarience matrix                                 
+29        cov9                covarience matrix                                 
+11        cx0                 magnetic field approximation                      
+12        cx1                 magnetic field approximation                      
+13        cx2                 magnetic field approximation                      
+14        cy0                 magnetic field approximation                      
+15        cy1                 magnetic field approximation                      
+16        cy2                 magnetic field approximation                      
+17        cz0                 magnetic field approximation                      
+18        cz1                 magnetic field approximation                      
+19        cz2                 magnetic field approximation                      
+2         dcax                not actuall Distance of Closest Approach, but extrapolated to z=z_vtx
+3         dcay                not actuall Distance of Closest Approach, but extrapolated to z=z_vtx
+4         dcaz                not actuall Distance of Closest Approach, but extrapolated to z=z_vtx
+-3        eta                 pseudorapidity                                    
+-7        p                   GeV/c                                             
+-2        pT                  GeV/c                                             
+-1        phi                 azimuthal angle                                   
+-4        px                  GeV/c                                             
+-5        py                  GeV/c                                             
+-6        pz                  GeV/c                                             
+10        qp                  track parameters                                  
+8         tx                  track parameters                                  
+9         ty                  track parameters                                  
+1         vtx_chi2            chi2 to to the primary vertex                     
+5         x                   track parameters                                  
+6         y                   track parameters                                  
+7         z                   track parameters                                  
+20        z0                  magnetic field approximation                      
+Integer fields:
+Id        Name                Info                                              
+5         mc_pdg              MC-true PDG code                                  
+4         mother_pdg          PDG code of mother particle                       
+0         ndf                 number degrees of freedom                         
+2         nhits               number of hits (total MVD+STS)                    
+3         nhits_mvd           number of hits in MVD                             
+1         q                   charge                                            
+Boolean fields:
+Id        Name                Info                                              
+0         pass_cuts           ask Oleksii                                       
+
+Branch TofHits (id=3626254281880578778) consists of:
+Floating fields:
+Id        Name                Info                                              
+4         dx                  Distance between TOF hit and extrapolated global track, cm
+5         dy                  Distance between TOF hit and extrapolated global track, cm
+6         dz                  Distance between TOF hit and extrapolated global track, cm
+1         l                   Track lenght                                      
+0         mass2               Mass squared                                      
+-1        phi                 azimuthal angle                                   
+3         qp_tof              charge * momentum extrapoleted to TOF             
+-2        signal                                                                
+2         t                   ps(?), Measured time                              
+-3        x                   cm                                                
+-4        y                   cm                                                
+-5        z                   cm                                                
+Integer fields:
+Id        Name                Info                                              
+0         mc_pdg              MC-true PDG code of particle with highest contribution to TOF hit
+Boolean fields:
+
+Branch SimEventHeader (id=3863242302486183833) consists of:
+Floating fields:
+Id        Name                Info                                              
+1         b                   fm, impact parameter                              
+0         psi_RP              reaction plane orientation                        
+2         time                ns, event time                                    
+-1        vtx_x               cm                                                
+-2        vtx_y               cm                                                
+-3        vtx_z               cm                                                
+Integer fields:
+Id        Name                Info                                              
+1         event_id            event identifier                                  
+0         run_id              run identifier                                    
+Boolean fields:
+
+Branch RecEventHeader (id=12127094650405921969) consists of:
+Floating fields:
+Id        Name                Info                                              
+1         Epsd                GeV, full energy deposit in PSD                   
+0         vtx_chi2            primiry vertex fit chi^2/NDF                      
+-1        vtx_x               cm                                                
+-2        vtx_y               cm                                                
+-3        vtx_z               cm                                                
+Integer fields:
+Id        Name                Info                                              
+0         M                   total multiplicity in STS(+MVD)                   
+1         evt_id              event identifier                                  
+Boolean fields:
+
+Branch RichRings (id=12571993180577682151) consists of:
+Floating fields:
+Id        Name                Info                                              
+1         axis_a                                                                
+2         axis_b                                                                
+3         center_x                                                              
+4         center_y                                                              
+5         chi2_ov_ndf         chi2/ndf ring fit                                 
+-1        phi                 azimuthal angle                                   
+6         phi_ellipse         phi rotation angle of ellipse                     
+8         radial_angle        (0||1||2)*pi +- atan( abs((+-100-y)/-x) )         
+7         radial_pos          sqrt(x**2+abs(y-110)**2)                          
+0         radius                                                                
+-2        signal                                                                
+-3        x                   cm                                                
+-4        y                   cm                                                
+-5        z                   cm                                                
+Integer fields:
+Id        Name                Info                                              
+0         n_hits                                                                
+1         n_hits_on_ring                                                        
+Boolean fields:
+
+Branch SimParticles (id=13349408156298386028) consists of:
+Floating fields:
+Id        Name                Info                                              
+-6        eta                 pseudorapidity                                    
+-5        mass                GeV/c^2                                           
+-10       p                   GeV/c                                             
+-2        pT                  GeV/c                                             
+-1        phi                 azimuthal angle                                   
+-7        px                  GeV/c                                             
+-8        py                  GeV/c                                             
+-9        pz                  GeV/c                                             
+-3        rapidity            in Lab. frame                                     
+0         x                   cm                                                
+1         y                   cm                                                
+2         z                   cm                                                
+Integer fields:
+Id        Name                Info                                              
+1         cbmroot_id          track id in CbmRoot transport file                
+2         geant_process_id                                                      
+0         mother_id           id of mother particle, -1 for primaries           
+3         n_hits_mvd          Number of hits in the detector                    
+4         n_hits_sts          Number of hits in the detector                    
+5         n_hits_trd          Number of hits in the detector                    
+-4        pid                 PDG code                                          
+Boolean fields:
+
+Branch PsdModules (id=15340343160034851614) consists of:
+Floating fields:
+Id        Name                Info                                              
+-2        signal                                                                
+Integer fields:
+Id        Name                Info                                              
+-1        number                                                                
+Boolean fields:
+
+Matching between branches available
+  TofHits SimParticles in branch TofHits2SimParticles
+  VtxTracks RichRings in branch VtxTracks2RichRings
+  VtxTracks SimParticles in branch VtxTracks2SimParticles
+  VtxTracks TofHits in branch VtxTracks2TofHits
+  VtxTracks TrdTracks in branch VtxTracks2TrdTracks
