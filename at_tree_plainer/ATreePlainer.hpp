@@ -22,11 +22,14 @@ class ATreePlainer : public AnalysisTree::Task {
 protected:
 
   // input branches
-  AnalysisTree::Detector<AnalysisTree::Hit>* tofhits_{nullptr};
   AnalysisTree::Particles* simulated_{nullptr};
+  AnalysisTree::Detector<AnalysisTree::Hit>* tofhits_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Track>*  vtxtracks_{nullptr};
+  AnalysisTree::Detector<AnalysisTree::Track>*  trdtracks_{nullptr};
+  // AnalysisTree::Detector<AnalysisTree::Hit>*  richrings_{nullptr};
   AnalysisTree::Matching* tof2sim_match_{nullptr};
   AnalysisTree::Matching* vtx2tof_match_{nullptr};
+  AnalysisTree::Matching* vtx2trd_match_{nullptr};
 
   // output branch
   AnalysisTree::Particles* plain_branch_{nullptr};
@@ -37,12 +40,20 @@ protected:
   // static constexpr float lambda_mass_sigma = 1.5e-3;
 
   //**** input fields ***********
-  // int l_id_tof_{AnalysisTree::UndefValueInt};
-  // int t_id_tof_{AnalysisTree::UndefValueInt};
+  //tof variables
   int mass2_id_tof_{AnalysisTree::UndefValueInt};
   int m_id_sim_{AnalysisTree::UndefValueInt};
-
+  //vtx variables
   int q_id_vtx_{AnalysisTree::UndefValueInt};
+  int chi2_id_vtx_{AnalysisTree::UndefValueInt};
+
+  //trd variables
+  int pe_id_trd_{AnalysisTree::UndefValueInt}; //probablilites
+  int ppi_id_trd_{AnalysisTree::UndefValueInt};
+  int pk_id_trd_{AnalysisTree::UndefValueInt};
+  int pp_id_trd_{AnalysisTree::UndefValueInt};
+  int nhits_id_trd_{AnalysisTree::UndefValueInt};
+  //
 
   //*****************************
 
@@ -51,6 +62,13 @@ protected:
   int mass2_id_w1_{AnalysisTree::UndefValueInt};
   // int t_id_w1_{AnalysisTree::UndefValueInt};
   int q_id_w1_{AnalysisTree::UndefValueInt};
+  int chi2_vtx_id_w1_{AnalysisTree::UndefValueInt};
+  int pe_id_w1_{AnalysisTree::UndefValueInt}; 
+  int ppi_id_w1_{AnalysisTree::UndefValueInt};
+  int pk_id_w1_{AnalysisTree::UndefValueInt};
+  int pp_id_w1_{AnalysisTree::UndefValueInt};
+  int nhits_trd_id_w1_{AnalysisTree::UndefValueInt};
+
 
 
   //******************************
