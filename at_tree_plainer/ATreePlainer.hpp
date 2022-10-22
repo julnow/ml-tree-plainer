@@ -26,18 +26,14 @@ protected:
   AnalysisTree::Detector<AnalysisTree::Hit>* tofhits_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Track>*  vtxtracks_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Track>*  trdtracks_{nullptr};
-  // AnalysisTree::Detector<AnalysisTree::Hit>*  richrings_{nullptr};
+  AnalysisTree::Detector<AnalysisTree::Hit>*  richrings_{nullptr};
   AnalysisTree::Matching* tof2sim_match_{nullptr};
   AnalysisTree::Matching* vtx2tof_match_{nullptr};
   AnalysisTree::Matching* vtx2trd_match_{nullptr};
+  AnalysisTree::Matching* vtx2rich_match_{nullptr};
 
   // output branch
   AnalysisTree::Particles* plain_branch_{nullptr};
-
-  // AnalysisTree::Cuts* cuts_{nullptr};
-
-  // static constexpr float lambda_mass = 1.115683;
-  // static constexpr float lambda_mass_sigma = 1.5e-3;
 
   //**** input fields ***********
   //tof variables
@@ -53,7 +49,18 @@ protected:
   int pk_id_trd_{AnalysisTree::UndefValueInt};
   int pp_id_trd_{AnalysisTree::UndefValueInt};
   int nhits_id_trd_{AnalysisTree::UndefValueInt};
-  //
+  
+  //rich variables
+  int axis_a_id_rich_{AnalysisTree::UndefValueInt};
+  int axis_b_id_rich_{AnalysisTree::UndefValueInt};
+  int radial_pos_id_rich_{AnalysisTree::UndefValueInt};
+  int radial_angle_id_rich_{AnalysisTree::UndefValueInt};
+  int chi2_ov_ndf_id_rich_{AnalysisTree::UndefValueInt};
+  int phi_ellipse_id_rich_{AnalysisTree::UndefValueInt};
+  int phi_id_rich_{AnalysisTree::UndefValueInt};
+  int radius_id_rich_{AnalysisTree::UndefValueInt};
+  int n_hits_id_rich_{AnalysisTree::UndefValueInt};
+  // int n_hits_on_ring_id_rich_{AnalysisTree::UndefValueInt};
 
   //*****************************
 
@@ -68,7 +75,16 @@ protected:
   int pk_id_w1_{AnalysisTree::UndefValueInt};
   int pp_id_w1_{AnalysisTree::UndefValueInt};
   int nhits_trd_id_w1_{AnalysisTree::UndefValueInt};
-
+  int axis_a_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int axis_b_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int radial_pos_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int radial_angle_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int chi2_ov_ndf_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int phi_ellipse_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int phi_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int radius_rich_id_w1_{AnalysisTree::UndefValueInt};
+  int n_hits_rich_id_w1_{AnalysisTree::UndefValueInt};
+  // int n_hits_on_ring_rich_id_w1_{AnalysisTree::UndefValueInt};
 
 
   //******************************
