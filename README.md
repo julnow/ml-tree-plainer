@@ -39,7 +39,7 @@ Install at_tree_plainer
     
     mkdir build
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-at_tree_plainer /path-to-source-at_tree_plainer
+    cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-ml_tree_plainer /path-to-source-ml_tree_plainer
     make -j install
     
 ## First run
