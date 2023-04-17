@@ -1,12 +1,9 @@
-# at_tree_plainer
+# ml_tree_plainer
 
 ## General information
 
-at_tree_plainer program is developed for conversion of complex AnalysisTree structure into plain tree (either AnalysisTree or ROOT::TTree).
-Current implemenation allows conversion of PFSimple output from "cascade" branch. The following fields are converted into plain tree:
- - Kinematic (such as momentum, mass) and selection variables (chi2, DCA) of the cascade particle (Xi) from "Candidates" branch;
- - Variable geant_process_id from "Simulated" branch if Xi from "Candidates" has matching with "Simulated";
- - Kinematic and selection variables of the daughter particle (Lambda) used for Xi construction from "Candidates" branch;
+ml_tree_plainer program is developed for conversion of complex AnalysisTree structure into plain tree (either AnalysisTree or ROOT::TTree).
+It is based on at_tree_plainer by Oleksii Lubynets.
 
 ## Pre-requirements
 
@@ -42,7 +39,7 @@ Install at_tree_plainer
     
     mkdir build
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-at_tree_plainer /path-to-source-at_tree_plainer
+    cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-ml_tree_plainer /path-to-source-ml_tree_plainer
     make -j install
     
 ## First run
