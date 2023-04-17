@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(ATP CXX)
+project(MLTP CXX)
 if(NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 11)
 endif()
@@ -47,25 +47,25 @@ include_directories(${CMAKE_SOURCE_DIR} ${AnalysisTree_INCLUDE_DIR})
 
 #************
 set(SOURCES
-  ATreePlainer.cpp
+  MlTreePlainer.cpp
   )
 
 string(REPLACE ".cpp" ".hpp" HEADERS "${SOURCES}")
-add_library(ATP SHARED ${SOURCES} G__ATP.cxx)
+add_library(MLTP SHARED ${SOURCES} G__MLTP.cxx)
         
 if(ROOT_FOUND)
-  ROOT_GENERATE_DICTIONARY(G__ATP ${HEADERS} LINKDEF ATPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+  ROOT_GENERATE_DICTIONARY(G__MLTP ${HEADERS} LINKDEF MLTPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
   include_directories(${CMAKE_SOURCE_DIR})
-  target_link_libraries(ATP ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
+  target_link_libraries(MLTP ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
 endif(ROOT_FOUND)  
-add_target_property(ATP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+add_target_property(MLTP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
 
 add_executable(main main.cpp)
-add_dependencies(main ATP)
+add_dependencies(main MLTP)
 add_target_property(main COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
-target_link_libraries(main ATP)
+target_link_libraries(main MLTP)
 
-install(TARGETS ATP EXPORT ATPTargets
+install(TARGETS MLTP EXPORT MLTPTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
@@ -81,7 +81,7 @@ install(
         Devel
 )
 
-set(PCM_FILE_NAME libATP)
+set(PCM_FILE_NAME libMLTP)
 
 install(
         FILES
@@ -96,37 +96,37 @@ install (TARGETS main RUNTIME DESTINATION bin)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/ATP/ATPConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfigVersion.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 
-export(EXPORT ATPTargets
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/ATP/ATPTargets.cmake")
+export(EXPORT MLTPTargets
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPTargets.cmake")
 
-message(STATUS "ATPTargets: ${ATPTargets}")
+message(STATUS "MLTPTargets: ${MLTPTargets}")
         
-set(ConfigPackageLocation lib/cmake/ATP)
+set(ConfigPackageLocation lib/cmake/MLTP)
 
-set(ATP_INCLUDE_DIR "include")
-set(ATP_LIBRARY_DIR "lib")
+set(MLTP_INCLUDE_DIR "include")
+set(MLTP_LIBRARY_DIR "lib")
 
 configure_package_config_file(
-        ATPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/ATP/ATPConfig.cmake
+        MLTPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake
         INSTALL_DESTINATION ${ConfigPackageLocation}
-        PATH_VARS ATP_INCLUDE_DIR ATP_LIBRARY_DIR
+        PATH_VARS MLTP_INCLUDE_DIR MLTP_LIBRARY_DIR
 )
 
-install(EXPORT ATPTargets
+install(EXPORT MLTPTargets
         FILE
-        ATPTargets.cmake
+        MLTPTargets.cmake
         DESTINATION
         ${ConfigPackageLocation}
         )
 
 install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/ATP/ATPConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/ATP/ATPConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfigVersion.cmake"
         DESTINATION
         ${ConfigPackageLocation}
         COMPONENT
