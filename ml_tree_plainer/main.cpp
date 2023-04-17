@@ -1,4 +1,4 @@
-#include "ATreePlainer.hpp"
+#include "MlTreePlainer.hpp"
 
 #include "AnalysisTree/TaskManager.hpp"
 #include "AnalysisTree/PlainTreeFiller.hpp"
@@ -16,12 +16,12 @@ int main(int argc, char** argv) {
   auto* man = AnalysisTree::TaskManager::GetInstance();
   man->SetOutputName("intermediate_tree.root", "pTree");
 
-  auto* at_plainer_task = new ATreePlainer();
+  auto* ml_plainer_task = new MlTreePlainer();
 
   // AnalysisTree::Cuts* cuts = new AnalysisTree::Cuts("cuts", {AnalysisTree::EqualsCut("Candidates.pid", 3312)});
   // at_plainer_task->SetCuts(cuts);
 
-  man->AddTask(at_plainer_task);
+  man->AddTask(ml_plainer_task);
 
   man->Init({filename}, {"rTree"});
   man->Run(-1);// -1 = all events
