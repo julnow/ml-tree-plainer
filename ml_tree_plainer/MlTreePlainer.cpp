@@ -146,8 +146,8 @@ void MlTreePlainer::InitIndices()
   //input fields
   //rec event
   auto in_branch_rec_event = config_->GetBranchConfig("RecEventHeader");
-  multiplicity_id_r_       = in_branch_rec_event.GetFieldId("M")
-  vtx_chi2_id_r_           = in_branch_rec_event.GetFieldId("vtx_chi2")
+  multiplicity_id_r_       = in_branch_rec_event.GetFieldId("M");
+  vtx_chi2_id_r_           = in_branch_rec_event.GetFieldId("vtx_chi2");
   //tofhits
   auto in_branch_tof   = config_->GetBranchConfig("TofHits");
   mass2_id_tof_        = in_branch_tof.GetFieldId("mass2");
