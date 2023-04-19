@@ -12,6 +12,7 @@ void MlTreePlainer::Init()
   vtxtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(chain->GetPointerToBranch("VtxTracks"));
   trdtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(chain->GetPointerToBranch("TrdTracks"));
   richrings_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Hit>*>(chain->GetPointerToBranch("RichRings"));
+  rec_event_header_ = ANALYSISTREE_UTILS_GET<AnalysisTree::EventHeader*>(chain->GetPointerToBranch("RecEventHeader"));
   //definition of matching
   tof2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("TofHits", "SimParticles"))->second;
   vtx2tof_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TofHits"))->second;
@@ -21,6 +22,9 @@ void MlTreePlainer::Init()
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   //output tree fields (excluding defaults values like momentum etc.)
   AnalysisTree::BranchConfig out_particles("Complex", AnalysisTree::DetType::kParticle);
+  //rec event
+  out_particles.AddField<int>("M");
+  out_particles.AddField<float>("event_vtx_chi2");
   //tof
   out_particles.AddField<float>("mass2");
   out_particles.AddField<float>("l");
@@ -66,6 +70,10 @@ void MlTreePlainer::Exec()
 
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
 
+  //rec event variables taken once for each event handled by Exec()
+  int multiplicity_r = rec_event_header_->GetField<int>(multiplicity_id_r_);
+  float vtx_chi2_r = rec_event_header_->GetField<int>(vtx_chi2_id_r_);
+
    for(auto& input_particle : *tofhits_)
    {
 
@@ -79,6 +87,9 @@ void MlTreePlainer::Exec()
             const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
             if (matched_particle_rich_id>0){
 
+              //RecEvent
+              output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
+              output_particle.SetField(vtx_chi2_r, vtx_chi2_w1_);
               //Tof
               auto& output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
               output_particle.SetField(input_particle.GetField<float>(mass2_id_tof_), mass2_id_w1_);
@@ -133,6 +144,10 @@ void MlTreePlainer::InitIndices()
 {
 
   //input fields
+  //rec event
+  auto in_branch_rec_event = config_->GetBranchConfig("RecEventHeader");
+  multiplicity_id_r_       = in_branch_rec_event.GetFieldId("M")
+  vtx_chi2_id_r_           = in_branch_rec_event.GetFieldId("vtx_chi2")
   //tofhits
   auto in_branch_tof   = config_->GetBranchConfig("TofHits");
   mass2_id_tof_        = in_branch_tof.GetFieldId("mass2");
@@ -174,6 +189,9 @@ void MlTreePlainer::InitIndices()
   //output tree
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   const auto& out_branch = out_config->GetBranchConfig(plain_branch_->GetId());
+  //rec event
+  multiplicity_id_w1_ = out_branch.GetFieldId("M");
+  vtx_chi2_w1_        = out_branch.GetFieldId("event_vtx_chi2");
   //tof
   mass2_id_w1_  = out_branch.GetFieldId("mass2");
   l_id_w1_      = out_branch.GetFieldId("l");

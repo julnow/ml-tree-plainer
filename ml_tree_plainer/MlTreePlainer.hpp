@@ -3,6 +3,7 @@
 
 #include "AnalysisTree/Cuts.hpp"
 #include "AnalysisTree/Detector.hpp"
+#include "AnalysisTree/EventHeader.hpp"
 #include "AnalysisTree/Task.hpp"
 
 class MlTreePlainer : public AnalysisTree::Task {
@@ -27,6 +28,7 @@ protected:
   AnalysisTree::Detector<AnalysisTree::Track>*  vtxtracks_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Track>*  trdtracks_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Hit>*  richrings_{nullptr};
+  AnalysisTree::EventHeader<AnalysisTree::EventHeader>* rec_event_header_{nullptr};
   AnalysisTree::Matching* tof2sim_match_{nullptr};
   AnalysisTree::Matching* vtx2tof_match_{nullptr};
   AnalysisTree::Matching* vtx2trd_match_{nullptr};
@@ -36,6 +38,9 @@ protected:
   AnalysisTree::Particles* plain_branch_{nullptr};
 
   //**** input fields ***********
+  //event header variables
+  int multiplicity_id_r_{AnalysisTree::UndefValueInt};
+  int vtx_chi2_id_r_{AnalysisTree::UndefValueInt};
   //tof variables
   int mass2_id_tof_{AnalysisTree::UndefValueInt};
   int l_id_tof_{AnalysisTree::UndefValueInt};
@@ -76,6 +81,9 @@ protected:
   //*****************************
 
   //***** output fields *********
+  //from event
+  int multiplicity_id_w1_{AnalysisTree::UndefValueInt};
+  int vtx_chi2_w1_{AnalysisTree::UndefValueInt};
   //from tof
   int mass2_id_w1_{AnalysisTree::UndefValueInt};
   int l_id_w1_{AnalysisTree::UndefValueInt};
