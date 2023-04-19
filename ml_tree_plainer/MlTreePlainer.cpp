@@ -87,11 +87,11 @@ void MlTreePlainer::Exec()
             const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
             if (matched_particle_rich_id>0){
 
+              auto& output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
               //RecEvent
               output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
               output_particle.SetField(vtx_chi2_r, vtx_chi2_w1_);
               //Tof
-              auto& output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
               output_particle.SetField(input_particle.GetField<float>(mass2_id_tof_), mass2_id_w1_);
               output_particle.SetField(input_particle.GetField<float>(l_id_tof_), l_id_w1_);
               output_particle.SetField(input_particle.GetField<float>(t_id_tof_), t_id_w1_);
