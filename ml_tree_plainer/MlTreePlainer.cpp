@@ -37,12 +37,12 @@ void MlTreePlainer::Init()
   out_particles.AddField<int>("q");
   out_particles.AddField<float>("chi2_vtx");
   out_particles.AddField<int>("ndf_vtx");
-  out_particles.AddField<int>("nhits_vtx");
+  out_particles.AddField<int>("n_hits_vtx");
   out_particles.AddField<float>("dcax");
   out_particles.AddField<float>("dcay");
   out_particles.AddField<float>("dcaz");
   //trd
-  out_particles.AddField<int>("nhits_trd");
+  out_particles.AddField<int>("n_hits_trd");
   out_particles.AddField<float>("chi2_ov_ndf_trd");
   out_particles.AddField<float>("e_loss_0");
   out_particles.AddField<float>("e_loss_1");
@@ -72,7 +72,7 @@ void MlTreePlainer::Exec()
 
   //rec event variables taken once for each event handled by Exec()
   int multiplicity_r = rec_event_header_->GetField<int>(multiplicity_id_r_);
-  float vtx_chi2_r = rec_event_header_->GetField<int>(vtx_chi2_id_r_);
+  float vtx_chi2_r = rec_event_header_->GetField<float>(vtx_chi2_id_r_);
 
    for(auto& input_particle : *tofhits_)
    {
@@ -86,7 +86,7 @@ void MlTreePlainer::Exec()
           if (matched_particle_trd_id > 0){
             const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
             if (matched_particle_rich_id>0){
-
+              //create output row with one particle
               auto& output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
               //RecEvent
               output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
@@ -116,12 +116,12 @@ void MlTreePlainer::Exec()
               //TrdTracks
               auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
               output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<int>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<int>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<int>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<int>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<int>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
-              //RichRings
+              output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
+              // //RichRings
               auto& matched_particle_rich = richrings_->GetChannel(matched_particle_rich_id);
               output_particle.SetField(matched_particle_rich.GetField<float>(axis_a_id_rich_), axis_a_rich_id_w1_);
               output_particle.SetField(matched_particle_rich.GetField<float>(axis_b_id_rich_), axis_b_rich_id_w1_);
@@ -160,16 +160,16 @@ void MlTreePlainer::InitIndices()
   //vtx tracks
   auto in_branch_vtx   = config_->GetBranchConfig("VtxTracks");
   q_id_vtx_            = in_branch_vtx.GetFieldId("q");
-  chi2_id_vtx_         = in_branch_vtx.GetFieldId("chi2_vtx");
-  ndf_id_vtx_          = in_branch_vtx.GetFieldId("ndf_vtx");
-  nhits_id_vtx_        = in_branch_vtx.GetFieldId("nhits_vtx");
+  chi2_id_vtx_         = in_branch_vtx.GetFieldId("vtx_chi2");
+  ndf_id_vtx_          = in_branch_vtx.GetFieldId("ndf");
+  nhits_id_vtx_        = in_branch_vtx.GetFieldId("nhits");
   dcax_id_vtx_         = in_branch_vtx.GetFieldId("dcax");
   dcay_id_vtx_         = in_branch_vtx.GetFieldId("dcay");
   dcaz_id_vtx_         = in_branch_vtx.GetFieldId("dcaz");
   //trdtracks
   auto in_branch_trd    = config_->GetBranchConfig("TrdTracks");
-  nhits_id_trd_         = in_branch_trd.GetFieldId("nhits_trd");
-  chi2_ov_ndf_id_trd_   = in_branch_trd.GetFieldId("chi2_ov_ndf_trd");
+  nhits_id_trd_         = in_branch_trd.GetFieldId("n_hits");
+  chi2_ov_ndf_id_trd_   = in_branch_trd.GetFieldId("chi2_ov_ndf");
   energy_loss_0_id_trd_ = in_branch_trd.GetFieldId("energy_loss_0");
   energy_loss_1_id_trd_ = in_branch_trd.GetFieldId("energy_loss_1");
   energy_loss_2_id_trd_ = in_branch_trd.GetFieldId("energy_loss_2");
@@ -180,36 +180,36 @@ void MlTreePlainer::InitIndices()
   axis_b_id_rich_       = in_branch_rich.GetFieldId("axis_b");
   radial_pos_id_rich_   = in_branch_rich.GetFieldId("radial_pos");
   radial_angle_id_rich_ = in_branch_rich.GetFieldId("radial_angle");
-  chi2_ov_ndf_id_rich_  = in_branch_rich.GetFieldId("chi2_ov_ndf_rich");
+  chi2_ov_ndf_id_rich_  = in_branch_rich.GetFieldId("chi2_ov_ndf");
   phi_ellipse_id_rich_  = in_branch_rich.GetFieldId("phi_ellipse");
-  phi_id_rich_          = in_branch_rich.GetFieldId("phi_rich");
+  phi_id_rich_          = in_branch_rich.GetFieldId("phi");
   radius_id_rich_       = in_branch_rich.GetFieldId("radius");
-  n_hits_id_rich_       = in_branch_rich.GetFieldId("n_hits_rich");
+  n_hits_id_rich_       = in_branch_rich.GetFieldId("n_hits");
 
   //output tree
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   const auto& out_branch = out_config->GetBranchConfig(plain_branch_->GetId());
-  //rec event
+  // rec event
   multiplicity_id_w1_ = out_branch.GetFieldId("M");
   vtx_chi2_w1_        = out_branch.GetFieldId("event_vtx_chi2");
-  //tof
+  // tof
   mass2_id_w1_  = out_branch.GetFieldId("mass2");
   l_id_w1_      = out_branch.GetFieldId("l");
   t_id_w1_      = out_branch.GetFieldId("t");
   phi_id_w1_    = out_branch.GetFieldId("phi_tof");
-  dx_id_w1_     = out_branch.GetFieldId("dx");
-  dy_id_w1_     = out_branch.GetFieldId("dy");
-  dz_id_w1_     = out_branch.GetFieldId("dz");
+  dx_id_w1_     = out_branch.GetFieldId("dx_tof");
+  dy_id_w1_     = out_branch.GetFieldId("dy_tof");
+  dz_id_w1_     = out_branch.GetFieldId("dz_tof");
   //vtx
   q_id_w1_               = out_branch.GetFieldId("q");
   chi2_vtx_id_w1_        = out_branch.GetFieldId("chi2_vtx");
   ndf_vtx_id_w1_         = out_branch.GetFieldId("ndf_vtx");
-  nhits_vtx_id_w1_       = out_branch.GetFieldId("nhits_vtx");
+  nhits_vtx_id_w1_       = out_branch.GetFieldId("n_hits_vtx");
   dcax_id_w1_            = out_branch.GetFieldId("dcax");
   dcay_id_w1_            = out_branch.GetFieldId("dcay");
   dcaz_id_w1_            = out_branch.GetFieldId("dcaz");
   //trd
-  nhits_trd_id_w1_       = out_branch.GetFieldId("nhits_trd");
+  nhits_trd_id_w1_       = out_branch.GetFieldId("n_hits_trd");
   chi2_ov_ndf_trd_id_w1_ = out_branch.GetFieldId("chi2_ov_ndf_trd");
   energy_loss_0_id_w1_   = out_branch.GetFieldId("e_loss_0");
   energy_loss_1_id_w1_   = out_branch.GetFieldId("e_loss_1");

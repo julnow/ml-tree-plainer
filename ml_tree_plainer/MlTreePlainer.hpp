@@ -41,7 +41,7 @@ protected:
   //event header variables
   int multiplicity_id_r_{AnalysisTree::UndefValueInt};
   int vtx_chi2_id_r_{AnalysisTree::UndefValueInt};
-  //tof variables
+  // tof variables
   int mass2_id_tof_{AnalysisTree::UndefValueInt};
   int l_id_tof_{AnalysisTree::UndefValueInt};
   int t_id_tof_{AnalysisTree::UndefValueInt};
