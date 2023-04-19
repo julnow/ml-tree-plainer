@@ -1,7 +1,7 @@
 #include "MlTreePlainer.hpp"
 #include "AnalysisTree/TaskManager.hpp"
 
-void ATreePlainer::Init()
+void MlTreePlainer::Init()
 {
   auto* man = AnalysisTree::TaskManager::GetInstance();
   auto* chain = man->GetChain();
