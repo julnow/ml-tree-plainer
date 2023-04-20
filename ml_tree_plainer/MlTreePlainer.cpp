@@ -93,9 +93,9 @@ void MlTreePlainer::Exec()
               output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
               output_particle.SetField(vtx_chi2_r, vtx_chi2_w1_);
               //Tof
-              float mass2 = input_particle.GetField<float>(mass2_id_tof_)
+              float mass2 = input_particle.GetField<float>(mass2_id_tof_);
               output_particle.SetField(mass2, mass2_id_w1_);
-              float qp_tof = input_particle.GetField<float>(qp_id_tof_)
+              float qp_tof = input_particle.GetField<float>(qp_id_tof_);
               // output_particle.SetField(input_particle.GetField<float>(l_id_tof_), l_id_w1_);
               // output_particle.SetField(input_particle.GetField<float>(t_id_tof_), t_id_w1_);
               output_particle.SetField(mass2/qp_tof/qp_tof, m2_ov_p2_id_w1_);
