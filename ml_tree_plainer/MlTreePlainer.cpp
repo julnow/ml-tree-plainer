@@ -79,7 +79,7 @@ void MlTreePlainer::Exec()
   {
     //gets particles which left track in any of the detectors
     const auto matched_particle_sim_id = tof2sim_match_->GetMatch(input_particle.GetId());
-    if (matched_particle_sim_id > 0){
+    if (matched_particle_sim_id > 0){ //sim and tof data neccessery for creating an output
     //create output row with one particle
       auto& output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
       //RecEvent
@@ -101,7 +101,7 @@ void MlTreePlainer::Exec()
       output_particle.SetMass(matched_particle_sim.GetMass());
       output_particle.SetPid(matched_particle_sim.GetPid());
       const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
-      if (matched_particle_vtx_id > 0){
+      if (matched_particle_vtx_id > 0){ //then vtx data is neccessaryy
         //VtxTracks
         auto& matched_particle_vtx = vtxtracks_->GetChannel(matched_particle_vtx_id);
         output_particle.SetMomentum3(matched_particle_vtx.GetMomentum3());
@@ -113,7 +113,7 @@ void MlTreePlainer::Exec()
         output_particle.SetField(matched_particle_vtx.GetField<float>(dcay_id_vtx_), dcay_id_w1_);
         output_particle.SetField(matched_particle_vtx.GetField<float>(dcaz_id_vtx_), dcaz_id_w1_);
         const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);//input_particle.GetId());
-        if (matched_particle_trd_id > 0){
+        if (matched_particle_trd_id > 0){ //trx and rich can be used seperately
           //TrdTracks
           auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
           output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
@@ -123,20 +123,19 @@ void MlTreePlainer::Exec()
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
           const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
-          if (matched_particle_rich_id>0){ 
-            //RichRings
-            auto& matched_particle_rich = richrings_->GetChannel(matched_particle_rich_id);
-            output_particle.SetField(matched_particle_rich.GetField<float>(axis_a_id_rich_), axis_a_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(axis_b_id_rich_), axis_b_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(radial_pos_id_rich_), radial_pos_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(radial_angle_id_rich_), radial_angle_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(chi2_ov_ndf_id_rich_), chi2_ov_ndf_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(phi_ellipse_id_rich_), phi_ellipse_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<float>(phi_id_rich_), phi_rich_id_w1_);              
-            output_particle.SetField(matched_particle_rich.GetField<float>(radius_id_rich_), radius_rich_id_w1_);
-            output_particle.SetField(matched_particle_rich.GetField<int>(n_hits_id_rich_), n_hits_rich_id_w1_);
-
-            }
+          }
+        if (matched_particle_rich_id>0){ 
+          //RichRings
+          auto& matched_particle_rich = richrings_->GetChannel(matched_particle_rich_id);
+          output_particle.SetField(matched_particle_rich.GetField<float>(axis_a_id_rich_), axis_a_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(axis_b_id_rich_), axis_b_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(radial_pos_id_rich_), radial_pos_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(radial_angle_id_rich_), radial_angle_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(chi2_ov_ndf_id_rich_), chi2_ov_ndf_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(phi_ellipse_id_rich_), phi_ellipse_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<float>(phi_id_rich_), phi_rich_id_w1_);              
+          output_particle.SetField(matched_particle_rich.GetField<float>(radius_id_rich_), radius_rich_id_w1_);
+          output_particle.SetField(matched_particle_rich.GetField<int>(n_hits_id_rich_), n_hits_rich_id_w1_);
           }
         }
       }
