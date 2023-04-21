@@ -67,7 +67,7 @@ void MlTreePlainer::Exec()
       auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
       output_particle.SetMass(matched_particle_sim.GetMass());
       output_particle.SetPid(matched_particle_sim.GetPid());
-      output_particle.GetMomentum3(matched_particle_sim.GetMomentum3());
+      output_particle.SetMomentum3(matched_particle_sim.GetMomentum3());
       output_particle.SetField(input_particle.GetField<int>(mother_id_s_), mother_id_w1_);
 
       const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
