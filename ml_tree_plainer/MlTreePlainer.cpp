@@ -112,18 +112,18 @@ void MlTreePlainer::Exec()
         output_particle.SetField(matched_particle_vtx.GetField<float>(dcax_id_vtx_), dcax_id_w1_);
         output_particle.SetField(matched_particle_vtx.GetField<float>(dcay_id_vtx_), dcay_id_w1_);
         output_particle.SetField(matched_particle_vtx.GetField<float>(dcaz_id_vtx_), dcaz_id_w1_);
+        //trx and rich can be used seperately
         const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);//input_particle.GetId());
-        if (matched_particle_trd_id > 0){ //trx and rich can be used seperately
+        if (matched_particle_trd_id > 0){ 
           //TrdTracks
-          auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
           output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
-          const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
           }
+        const auto matched_particle_rich_id = vtx2rich_match_->GetMatch(matched_particle_vtx_id);
         if (matched_particle_rich_id>0){ 
           //RichRings
           auto& matched_particle_rich = richrings_->GetChannel(matched_particle_rich_id);
