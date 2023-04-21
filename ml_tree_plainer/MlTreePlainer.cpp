@@ -111,9 +111,9 @@ void MlTreePlainer::InitIndices()
   // simevents
   auto in_branch_sim = config_->GetBranchConfig("SimParticles");
   mother_id_s_ = in_branch_sim.GetFieldId("mother_id");
-  int pT_id_s_ = in_branch_sim.GetFieldId("pT");
-  int p_id_s_ = in_branch_sim.GetFieldId("p");
-  int phi_id_s_ = in_branch_sim.GetFieldId("phi");
+  pT_id_s_ = in_branch_sim.GetFieldId("pT");
+  p_id_s_ = in_branch_sim.GetFieldId("p");
+  phi_id_s_ = in_branch_sim.GetFieldId("phi");
 
   // vtx tracks
   auto in_branch_vtx = config_->GetBranchConfig("VtxTracks");
