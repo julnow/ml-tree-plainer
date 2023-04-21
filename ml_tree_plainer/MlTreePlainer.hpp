@@ -40,7 +40,6 @@ protected:
   int qp_id_tof_{AnalysisTree::UndefValueInt};
   int l_id_tof_{AnalysisTree::UndefValueInt};
   int t_id_tof_{AnalysisTree::UndefValueInt};
-  int phi_id_tof_{AnalysisTree::UndefValueInt};
 
   // vtx variables
   int q_id_vtx_{AnalysisTree::UndefValueInt};
@@ -64,7 +63,6 @@ protected:
   // from tof
   int mass2_id_w1_{AnalysisTree::UndefValueInt};
   int m2_ov_p2_id_w1_{AnalysisTree::UndefValueInt};
-  int phi_id_w1_{AnalysisTree::UndefValueInt};
   int l_id_w1_{AnalysisTree::UndefValueInt};
   int t_id_w1_{AnalysisTree::UndefValueInt};
   // from vtx

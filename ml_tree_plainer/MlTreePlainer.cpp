@@ -25,7 +25,6 @@ void MlTreePlainer::Init()
   out_particles.AddField<float>("l");
   out_particles.AddField<float>("t");
   out_particles.AddField<float>("mass2_over_p2");
-  out_particles.AddField<float>("phi_tof");
   // sim
   out_particles.AddField<int>("mother_id");
   out_particles.AddField<float>("sim_pT");
@@ -106,7 +105,6 @@ void MlTreePlainer::InitIndices()
   l_id_tof_ = in_branch_tof.GetFieldId("l");
   t_id_tof_ = in_branch_tof.GetFieldId("t");
   qp_id_tof_ = in_branch_tof.GetFieldId("qp_tof");
-  phi_id_tof_ = in_branch_tof.GetFieldId("phi");
 
   // simevents
   auto in_branch_sim = config_->GetBranchConfig("SimParticles");
@@ -132,7 +130,6 @@ void MlTreePlainer::InitIndices()
   l_id_w1_ = out_branch.GetFieldId("l");
   t_id_w1_ = out_branch.GetFieldId("t");
   m2_ov_p2_id_w1_ = out_branch.GetFieldId("mass2_over_p2");
-  phi_id_w1_ = out_branch.GetFieldId("phi_tof");
   // vtx
   q_id_w1_ = out_branch.GetFieldId("q");
   vtx_chi2_id_w1_ = out_branch.GetFieldId("vtx_chi2");
