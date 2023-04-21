@@ -53,7 +53,7 @@ void MlTreePlainer::Exec()
   {
     // gets particles which left tracks in tof
     const auto matched_particle_sim_id = tof2sim_match_->GetMatch(input_particle.GetId());
-    if (matched_particle_sim_id < 0){
+    if (matched_particle_sim_id > 0){
         // Simulated
         auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
         int mother_id = matched_particle_sim.GetField<int>(mother_id_s_);
