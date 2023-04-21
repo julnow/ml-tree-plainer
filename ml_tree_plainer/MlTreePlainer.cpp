@@ -116,6 +116,7 @@ void MlTreePlainer::Exec()
         const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);//input_particle.GetId());
         if (matched_particle_trd_id > 0){ 
           //TrdTracks
+          auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
           output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
           output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
@@ -136,6 +137,7 @@ void MlTreePlainer::Exec()
           output_particle.SetField(matched_particle_rich.GetField<float>(phi_id_rich_), phi_rich_id_w1_);              
           output_particle.SetField(matched_particle_rich.GetField<float>(radius_id_rich_), radius_rich_id_w1_);
           output_particle.SetField(matched_particle_rich.GetField<int>(n_hits_id_rich_), n_hits_rich_id_w1_);
+
           }
         }
       }
