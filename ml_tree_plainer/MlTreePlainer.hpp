@@ -50,6 +50,11 @@ protected:
 
   // sim particles variables
   int mother_id_s_{AnalysisTree::UndefValueInt};
+  int pT_id_s_{AnalysisTree::UndefValueInt};
+  int p_id_s_{AnalysisTree::UndefValueInt};
+  int phi_id_s_{AnalysisTree::UndefValueInt};
+
+  
 
   //*****************************
 
@@ -68,6 +73,9 @@ protected:
   int chi2_ov_ndf_id_w1_{AnalysisTree::UndefValueInt};
   // from sim
   int mother_id_w1_{AnalysisTree::UndefValueInt};
+  int sim_pT_w1_{AnalysisTree::UndefValueInt};
+  int sim_p_w1_{AnalysisTree::UndefValueInt};
+  int sim_phi_w1_{AnalysisTree::UndefValueInt};
 
   //******************************
 };

@@ -28,6 +28,9 @@ void MlTreePlainer::Init()
   out_particles.AddField<float>("phi_tof");
   // sim
   out_particles.AddField<int>("mother_id");
+  out_particles.AddField<float>("sim_pT");
+  out_particles.AddField<float>("sim_p");
+  out_particles.AddField<float>("sim_phi");
   // vtx
   out_particles.AddField<int>("q");
   out_particles.AddField<float>("vtx_chi2");
@@ -67,8 +70,10 @@ void MlTreePlainer::Exec()
       auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
       output_particle.SetMass(matched_particle_sim.GetMass());
       output_particle.SetPid(matched_particle_sim.GetPid());
-      output_particle.SetMomentum3(matched_particle_sim.GetMomentum3());
       output_particle.SetField(input_particle.GetField<int>(mother_id_s_), mother_id_w1_);
+      output_particle.SetField(input_particle.GetField<float>(pT_id_s_), sim_pT_w1_);
+      output_particle.SetField(input_particle.GetField<float>(p_id_s_), sim_p_w1_);
+      output_particle.SetField(input_particle.GetField<float>(phi_id_s_), sim_phi_w1_);
 
       const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
       if (matched_particle_vtx_id > 0)
@@ -106,6 +111,10 @@ void MlTreePlainer::InitIndices()
   // simevents
   auto in_branch_sim = config_->GetBranchConfig("SimParticles");
   mother_id_s_ = in_branch_sim.GetFieldId("mother_id");
+  int pT_id_s_ = in_branch_sim.GetFieldId("pT");
+  int p_id_s_ = in_branch_sim.GetFieldId("p");
+  int phi_id_s_ = in_branch_sim.GetFieldId("phi");
+
   // vtx tracks
   auto in_branch_vtx = config_->GetBranchConfig("VtxTracks");
   q_id_vtx_ = in_branch_vtx.GetFieldId("q");
@@ -129,5 +138,8 @@ void MlTreePlainer::InitIndices()
   vtx_chi2_id_w1_ = out_branch.GetFieldId("vtx_chi2");
   chi2_ov_ndf_id_w1_ = out_branch.GetFieldId("chi2_ov_ndf_vtx");
   // sim
-  mother_id_w1_ = in_branch_sim.GetFieldId("mother_id");
+  mother_id_w1_ = out_branch.GetFieldId("mother_id");
+  sim_pT_w1_ = out_branch.GetFieldId("sim_pT");
+  sim_p_w1_ = out_branch.GetFieldId("sim_p");
+  sim_phi_w1_ = out_branch.GetFieldId("sim_phi");
 }
