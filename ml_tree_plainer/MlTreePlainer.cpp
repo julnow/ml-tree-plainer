@@ -56,7 +56,7 @@ void MlTreePlainer::Exec()
     if (matched_particle_sim_id > 0){
         // Simulated
         auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
-        int mother_id = matched_particle_sim.GetField<int>(mother_id_s_)
+        int mother_id = matched_particle_sim.GetField<int>(mother_id_s_);
         //only primaries
         if (mother_id<0){
         auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
