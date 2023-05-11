@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     filelist.close();
 
     auto* tree_task = new AnalysisTree::PlainTreeFiller();
-    std::string branchname_rec = "Complex";
+    std::string branchname_rec = "";
     tree_task->SetInputBranchNames({branchname_rec});
     tree_task->SetOutputName("analysis_plain_ttree.root", "plain_tree");
     tree_task->AddBranch(branchname_rec);
