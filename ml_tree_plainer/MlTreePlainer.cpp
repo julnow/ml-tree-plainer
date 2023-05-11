@@ -17,7 +17,7 @@ void MlTreePlainer::Init()
 
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   // output tree fields (excluding defaults values like momentum etc.)
-  AnalysisTree::BranchConfig out_particles("", AnalysisTree::DetType::kParticle);
+  AnalysisTree::BranchConfig out_particles("Complex", AnalysisTree::DetType::kParticle);
   // rec event
   out_particles.AddField<int>("M");
   // tof
