@@ -37,7 +37,6 @@ protected:
   int multiplicity_id_r_{AnalysisTree::UndefValueInt};
   // tof variables
   int mass2_id_tof_{AnalysisTree::UndefValueInt};
-  int qp_id_tof_{AnalysisTree::UndefValueInt};
   int l_id_tof_{AnalysisTree::UndefValueInt};
   int t_id_tof_{AnalysisTree::UndefValueInt};
 
@@ -52,6 +51,8 @@ protected:
   int pT_id_s_{AnalysisTree::UndefValueInt};
   int p_id_s_{AnalysisTree::UndefValueInt};
   int phi_id_s_{AnalysisTree::UndefValueInt};
+  int eta_id_s_{AnalysisTree::UndefValueInt};
+
 
   
 
@@ -62,7 +63,7 @@ protected:
   int multiplicity_id_w1_{AnalysisTree::UndefValueInt};
   // from tof
   int mass2_id_w1_{AnalysisTree::UndefValueInt};
-  int m2_ov_p2_id_w1_{AnalysisTree::UndefValueInt};
+  int v_tof_id_w1_{AnalysisTree::UndefValueInt};
   int l_id_w1_{AnalysisTree::UndefValueInt};
   int t_id_w1_{AnalysisTree::UndefValueInt};
   // from vtx
@@ -74,6 +75,7 @@ protected:
   int sim_pT_w1_{AnalysisTree::UndefValueInt};
   int sim_p_w1_{AnalysisTree::UndefValueInt};
   int sim_phi_w1_{AnalysisTree::UndefValueInt};
+  int sim_eta_w1_{AnalysisTree::UndefValueInt};
 
   //******************************
 };
