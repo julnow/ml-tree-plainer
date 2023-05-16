@@ -28,6 +28,8 @@ protected:
   AnalysisTree::EventHeader *rec_event_header_{nullptr};
   AnalysisTree::Matching *tof2sim_match_{nullptr};
   AnalysisTree::Matching *vtx2tof_match_{nullptr};
+  AnalysisTree::Matching *vtx2sim_match_{nullptr};
+  
 
   // output branch
   AnalysisTree::Particles *plain_branch_{nullptr};
