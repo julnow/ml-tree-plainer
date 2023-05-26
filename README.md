@@ -3,7 +3,7 @@
 ## General information
 
 ml_tree_plainer program is developed for conversion of complex AnalysisTree structure into plain tree (either AnalysisTree or ROOT::TTree).
-It is based on at_tree_plainer by Oleksii Lubynets.
+It is based on [at_tree_plainer] (git.cbm.gsi.de:o.lubynets/at_tree_plainer.git) by Oleksii Lubynets.
 
 ## Pre-requirements
 
@@ -25,7 +25,7 @@ Follow instructions
 
 Clone at_tree_plainer
 
-    git clone git@git.cbm.gsi.de:o.lubynets/at_tree_plainer.git
+    git clone git@github.com:julnow/ml-tree-plainer.git
     
 Source ROOT
 
@@ -45,13 +45,5 @@ Install at_tree_plainer
 ## First run
 
 ./main file_list.txt
-where file_list.txt should contain names of PFSimple output AnalysisTree files
-
-## Configuration
-
-If one wants to add conersion of another fields then one should modify ATreePlainer class in several places:
- - add field ids as class members in .hpp
- - ad corresponding fields in ATreePlainer::Init()
- - initialize field ids in ATreePlainer::InitIndices()
- - perform copyng the field contentin ATreePlainer::Exec()
+where file_list.txt should contain names of AnalysisTree files
 
