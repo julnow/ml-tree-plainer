@@ -3,7 +3,7 @@
 ## General information
 
 ml_tree_plainer program is developed for conversion of complex AnalysisTree structure into plain tree (either AnalysisTree or ROOT::TTree).
-It is based on [at_tree_plainer] (git.cbm.gsi.de:o.lubynets/at_tree_plainer.git) by Oleksii Lubynets.
+It is based on [at_tree_plainer] (http://git.cbm.gsi.de:o.lubynets/at_tree_plainer.git) by Oleksii Lubynets.
 
 ## Pre-requirements
 
