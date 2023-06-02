@@ -29,6 +29,7 @@ protected:
   AnalysisTree::Matching *tof2sim_match_{nullptr};
   AnalysisTree::Matching *vtx2tof_match_{nullptr};
   AnalysisTree::Matching *vtx2sim_match_{nullptr};
+  AnalysisTree::Matching* vtx2trd_match_{nullptr};
   
 
   // output branch
@@ -55,6 +56,14 @@ protected:
   int phi_id_s_{AnalysisTree::UndefValueInt};
   int eta_id_s_{AnalysisTree::UndefValueInt};
 
+  //trd variables
+  int nhits_id_trd_{AnalysisTree::UndefValueInt};
+  int chi2_ov_ndf_id_trd_{AnalysisTree::UndefValueInt};
+  int energy_loss_0_id_trd_{AnalysisTree::UndefValueInt};
+  int energy_loss_1_id_trd_{AnalysisTree::UndefValueInt};
+  int energy_loss_2_id_trd_{AnalysisTree::UndefValueInt};
+  int energy_loss_3_id_trd_{AnalysisTree::UndefValueInt};
+
 
   
 
@@ -78,6 +87,13 @@ protected:
   int sim_p_w1_{AnalysisTree::UndefValueInt};
   int sim_phi_w1_{AnalysisTree::UndefValueInt};
   int sim_eta_w1_{AnalysisTree::UndefValueInt};
+  //from trd
+  int nhits_trd_id_w1_{AnalysisTree::UndefValueInt};
+  int chi2_ov_ndf_trd_id_w1_{AnalysisTree::UndefValueInt};
+  int energy_loss_0_id_w1_{AnalysisTree::UndefValueInt};
+  int energy_loss_1_id_w1_{AnalysisTree::UndefValueInt};
+  int energy_loss_2_id_w1_{AnalysisTree::UndefValueInt};
+  int energy_loss_3_id_w1_{AnalysisTree::UndefValueInt};
 
   //******************************
 };

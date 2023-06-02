@@ -36,6 +36,13 @@ void MlTreePlainer::Init()
   out_particles.AddField<int>("q");
   out_particles.AddField<float>("vtx_chi2");
   out_particles.AddField<float>("chi2_ov_ndf_vtx");
+  //trd
+  out_particles.AddField<int>("n_hits_trd");
+  out_particles.AddField<float>("chi2_ov_ndf_trd");
+  out_particles.AddField<float>("e_loss_0");
+  out_particles.AddField<float>("e_loss_1");
+  out_particles.AddField<float>("e_loss_2");
+  out_particles.AddField<float>("e_loss_3");
 
   man->AddBranch(plain_branch_, out_particles);
 
@@ -72,6 +79,7 @@ void MlTreePlainer::Exec()
           const auto matched_particle_sim_vtx_id = vtx2sim_match_->GetMatch(matched_particle_vtx_id);
           if (matched_particle_sim_vtx_id == matched_particle_sim_id)
           {
+            
             auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
             output_particle.SetMass(matched_particle_sim.GetMass());
             output_particle.SetPid(matched_particle_sim.GetPid());
@@ -98,6 +106,18 @@ void MlTreePlainer::Exec()
             float chi2_vtx = matched_particle_vtx.GetField<float>(chi2_id_vtx_);
             int ndf_vtx = matched_particle_vtx.GetField<int>(ndf_id_vtx_);
             output_particle.SetField(chi2_vtx / ndf_vtx, chi2_ov_ndf_id_w1_);
+
+            const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);
+            if (matched_particle_trd_id > 0){ 
+              //TrdTracks
+              auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
+              output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
+              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
+            }
           }
         }
       }
@@ -135,6 +155,15 @@ void MlTreePlainer::InitIndices()
   chi2_id_vtx_ = in_branch_vtx.GetFieldId("chi2");
   ndf_id_vtx_ = in_branch_vtx.GetFieldId("ndf");
 
+  //trdtracks
+  auto in_branch_trd    = config_->GetBranchConfig("TrdTracks");
+  nhits_id_trd_         = in_branch_trd.GetFieldId("n_hits");
+  chi2_ov_ndf_id_trd_   = in_branch_trd.GetFieldId("chi2_ov_ndf");
+  energy_loss_0_id_trd_ = in_branch_trd.GetFieldId("energy_loss_0");
+  energy_loss_1_id_trd_ = in_branch_trd.GetFieldId("energy_loss_1");
+  energy_loss_2_id_trd_ = in_branch_trd.GetFieldId("energy_loss_2");
+  energy_loss_3_id_trd_ = in_branch_trd.GetFieldId("energy_loss_3");
+
   // output tree
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   const auto &out_branch = out_config->GetBranchConfig(plain_branch_->GetId());
@@ -155,4 +184,11 @@ void MlTreePlainer::InitIndices()
   sim_p_w1_ = out_branch.GetFieldId("sim_p");
   sim_phi_w1_ = out_branch.GetFieldId("sim_phi");
   sim_eta_w1_ = out_branch.GetFieldId("sim_eta");
+  //trd
+  nhits_trd_id_w1_       = out_branch.GetFieldId("n_hits_trd");
+  chi2_ov_ndf_trd_id_w1_ = out_branch.GetFieldId("chi2_ov_ndf_trd");
+  energy_loss_0_id_w1_   = out_branch.GetFieldId("e_loss_0");
+  energy_loss_1_id_w1_   = out_branch.GetFieldId("e_loss_1");
+  energy_loss_2_id_w1_   = out_branch.GetFieldId("e_loss_2");
+  energy_loss_3_id_w1_   = out_branch.GetFieldId("e_loss_3");
 }
