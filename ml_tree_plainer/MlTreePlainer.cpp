@@ -11,6 +11,7 @@ void MlTreePlainer::Init()
   simulated_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Particles *>(chain->GetPointerToBranch("SimParticles"));
   vtxtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track> *>(chain->GetPointerToBranch("VtxTracks"));
   rec_event_header_ = ANALYSISTREE_UTILS_GET<AnalysisTree::EventHeader *>(chain->GetPointerToBranch("RecEventHeader"));
+  trdtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(chain->GetPointerToBranch("TrdTracks"));
   // definition of matching
   tof2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("TofHits", "SimParticles"))->second;
   vtx2tof_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TofHits"))->second;
