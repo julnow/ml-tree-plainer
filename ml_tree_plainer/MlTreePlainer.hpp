@@ -26,6 +26,7 @@ protected:
   AnalysisTree::Detector<AnalysisTree::Hit> *tofhits_{nullptr};
   AnalysisTree::Detector<AnalysisTree::Track> *vtxtracks_{nullptr};
   AnalysisTree::EventHeader *rec_event_header_{nullptr};
+  AnalysisTree::Detector<AnalysisTree::Track>*  trdtracks_{nullptr};
   AnalysisTree::Matching *tof2sim_match_{nullptr};
   AnalysisTree::Matching *vtx2tof_match_{nullptr};
   AnalysisTree::Matching *vtx2sim_match_{nullptr};
