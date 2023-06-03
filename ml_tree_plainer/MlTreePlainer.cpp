@@ -15,6 +15,7 @@ void MlTreePlainer::Init()
   tof2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("TofHits", "SimParticles"))->second;
   vtx2tof_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TofHits"))->second;
   vtx2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "SimParticles"))->second;
+  vtx2trd_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TrdTracks"))->second;
 
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   // output tree fields (excluding defaults values like momentum etc.)
