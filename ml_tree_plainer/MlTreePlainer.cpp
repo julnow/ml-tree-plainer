@@ -69,57 +69,53 @@ void MlTreePlainer::Exec()
       // Simulated
       auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
       int mother_id = matched_particle_sim.GetField<int>(mother_id_s_);
-      // only primaries
-      if (mother_id < 0)
+      // only matched vtx to tof and same sim
+      const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
+      auto &matched_particle_vtx = vtxtracks_->GetChannel(matched_particle_vtx_id);
+
+      if (matched_particle_vtx_id > 0)
       {
-        // only matched vtx to tof and same sim
-        const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
-        auto &matched_particle_vtx = vtxtracks_->GetChannel(matched_particle_vtx_id);
-
-        if (matched_particle_vtx_id > 0)
+        const auto matched_particle_sim_vtx_id = vtx2sim_match_->GetMatch(matched_particle_vtx_id);
+        if (matched_particle_sim_vtx_id == matched_particle_sim_id)
         {
-          const auto matched_particle_sim_vtx_id = vtx2sim_match_->GetMatch(matched_particle_vtx_id);
-          if (matched_particle_sim_vtx_id == matched_particle_sim_id)
-          {
-            
-            auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
-            output_particle.SetMass(matched_particle_sim.GetMass());
-            output_particle.SetPid(matched_particle_sim.GetPid());
-            output_particle.SetField(mother_id, mother_id_w1_);
-            output_particle.SetField(matched_particle_sim.GetField<float>(pT_id_s_), sim_pT_w1_);
-            output_particle.SetField(matched_particle_sim.GetField<float>(p_id_s_), sim_p_w1_);
-            output_particle.SetField(matched_particle_sim.GetField<float>(phi_id_s_), sim_phi_w1_);
-            output_particle.SetField(matched_particle_sim.GetField<float>(eta_id_s_), sim_eta_w1_);
+          
+          auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
+          output_particle.SetMass(matched_particle_sim.GetMass());
+          output_particle.SetPid(matched_particle_sim.GetPid());
+          output_particle.SetField(mother_id, mother_id_w1_);
+          output_particle.SetField(matched_particle_sim.GetField<float>(pT_id_s_), sim_pT_w1_);
+          output_particle.SetField(matched_particle_sim.GetField<float>(p_id_s_), sim_p_w1_);
+          output_particle.SetField(matched_particle_sim.GetField<float>(phi_id_s_), sim_phi_w1_);
+          output_particle.SetField(matched_particle_sim.GetField<float>(eta_id_s_), sim_eta_w1_);
 
-            // RecEvent
-            output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
-            // Tof
-            output_particle.SetField(input_particle.GetField<float>(mass2_id_tof_), mass2_id_w1_);
-            float l_tof = input_particle.GetField<float>(l_id_tof_);
-            output_particle.SetField(l_tof, l_id_w1_);
-            float t_tof = input_particle.GetField<float>(t_id_tof_);
-            output_particle.SetField(t_tof, t_id_w1_);
-            output_particle.SetField(l_tof / t_tof, v_tof_id_w1_);
+          // RecEvent
+          output_particle.SetField(multiplicity_r, multiplicity_id_w1_);
+          // Tof
+          output_particle.SetField(input_particle.GetField<float>(mass2_id_tof_), mass2_id_w1_);
+          float l_tof = input_particle.GetField<float>(l_id_tof_);
+          output_particle.SetField(l_tof, l_id_w1_);
+          float t_tof = input_particle.GetField<float>(t_id_tof_);
+          output_particle.SetField(t_tof, t_id_w1_);
+          output_particle.SetField(l_tof / t_tof, v_tof_id_w1_);
 
-            // VtxTracks
-            output_particle.SetMomentum3(matched_particle_vtx.GetMomentum3());
-            output_particle.SetField(matched_particle_vtx.GetField<int>(q_id_vtx_), q_id_w1_);
-            output_particle.SetField(matched_particle_vtx.GetField<float>(vtx_chi2_id_vtx_), vtx_chi2_id_w1_);
-            float chi2_vtx = matched_particle_vtx.GetField<float>(chi2_id_vtx_);
-            int ndf_vtx = matched_particle_vtx.GetField<int>(ndf_id_vtx_);
-            output_particle.SetField(chi2_vtx / ndf_vtx, chi2_ov_ndf_id_w1_);
+          // VtxTracks
+          output_particle.SetMomentum3(matched_particle_vtx.GetMomentum3());
+          output_particle.SetField(matched_particle_vtx.GetField<int>(q_id_vtx_), q_id_w1_);
+          output_particle.SetField(matched_particle_vtx.GetField<float>(vtx_chi2_id_vtx_), vtx_chi2_id_w1_);
+          float chi2_vtx = matched_particle_vtx.GetField<float>(chi2_id_vtx_);
+          int ndf_vtx = matched_particle_vtx.GetField<int>(ndf_id_vtx_);
+          output_particle.SetField(chi2_vtx / ndf_vtx, chi2_ov_ndf_id_w1_);
 
-            const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);
-            if (matched_particle_trd_id > 0){ 
-              //TrdTracks
-              auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
-              output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
-              output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
-            }
+          const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);
+          if (matched_particle_trd_id > 0){ 
+            //TrdTracks
+            auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
+            output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
+            output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
+            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
+            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
+            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
+            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
           }
         }
       }
