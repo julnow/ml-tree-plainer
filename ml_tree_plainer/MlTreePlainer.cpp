@@ -171,9 +171,9 @@ void MlTreePlainer::InitIndices()
   sim_phi_w1_ = out_branch.GetFieldId("sim_phi");
   sim_eta_w1_ = out_branch.GetFieldId("sim_eta");
   //rec
-  gauss_pid_id_w1_ = in_branch_vtx.GetFieldId("gauss_pid");
-  prob_K_id_w1_ = in_branch_vtx.GetFieldId("prob_K");
-  prob_p_id_w1_ = in_branch_vtx.GetFieldId("prob_p");
-  prob_pi_id_w1_ = in_branch_vtx.GetFieldId("prob_pi");
+  gauss_pid_id_w1_ = out_branch.GetFieldId("gauss_pid");
+  prob_K_id_w1_ = out_branch.GetFieldId("prob_K");
+  prob_p_id_w1_ = out_branch.GetFieldId("prob_p");
+  prob_pi_id_w1_ = out_branch.GetFieldId("prob_pi");
 
 }
