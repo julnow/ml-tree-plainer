@@ -69,7 +69,7 @@ void MlTreePlainer::Exec()
       int mother_id = matched_particle_sim.GetField<int>(mother_id_s_);
       // only matched vtx to tof and same sim
       const auto matched_particle_vtx_id = rec2tof_match_->GetMatchInverted(input_particle.GetId());
-      auto &matched_particle_vtx = vtxtracks_->GetChannel(matched_particle_vtx_id);
+      auto &matched_particle_vtx = rec_particles_->GetChannel(matched_particle_vtx_id);
       if (matched_particle_vtx_id > 0)
       {
         const auto matched_particle_sim_vtx_id = rec2sim_match_->GetMatch(matched_particle_vtx_id);
