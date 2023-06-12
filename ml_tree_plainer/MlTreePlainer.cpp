@@ -72,9 +72,9 @@ void MlTreePlainer::Exec()
       auto &matched_particle_vtx = rec_particles_->GetChannel(matched_particle_vtx_id);
       if (matched_particle_vtx_id > 0)
       {
-        // const auto matched_particle_sim_vtx_id = rec2sim_match_->GetMatch(matched_particle_vtx_id);
-        // if (matched_particle_sim_vtx_id == matched_particle_sim_id)
-        // {
+        const auto matched_particle_sim_vtx_id = rec2sim_match_->GetMatch(matched_particle_vtx_id);
+        if (matched_particle_sim_vtx_id == matched_particle_sim_id)
+        {
           
           auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
           output_particle.SetMass(matched_particle_sim.GetMass());
@@ -108,7 +108,7 @@ void MlTreePlainer::Exec()
           // output_particle.SetField(matched_particle_vtx.GetField<float>(prob_p_id_vtx_), prob_p_id_w1_);
           // output_particle.SetField(matched_particle_vtx.GetField<float>(prob_pi_id_vtx_), prob_pi_id_w1_);
 
-        // }
+        }
       }
     }
   }
