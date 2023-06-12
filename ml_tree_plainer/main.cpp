@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
   man->AddTask(ml_plainer_task);
 
-  man->Init({filename}, {"rTree"});
+  man->Init({filename}, {"aTree"});
   man->Run(-1);// -1 = all events
   man->Finish();
 
