@@ -42,7 +42,7 @@ Install at_tree_plainer
     cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-ml_tree_plainer /path-to-source-ml_tree_plainer
     make -j install
 For debugging the flag
-    ``CMAKE_BUILD_TYPE=DEBUG``
+    ``DCMAKE_BUILD_TYPE=DEBUG``
 should be added
     
 ## First run
