@@ -50,6 +50,8 @@ protected:
   int prob_K_id_vtx_{AnalysisTree::UndefValueInt};
   int prob_p_id_vtx_{AnalysisTree::UndefValueInt};
   int prob_pi_id_vtx_{AnalysisTree::UndefValueInt};
+  int prob_bg_id_vtx_{AnalysisTree::UndefValueInt};
+
 
   // sim particles variables
   int mother_id_s_{AnalysisTree::UndefValueInt};
@@ -76,6 +78,8 @@ protected:
   int prob_K_id_w1_{AnalysisTree::UndefValueInt};
   int prob_p_id_w1_{AnalysisTree::UndefValueInt};
   int prob_pi_id_w1_{AnalysisTree::UndefValueInt};
+  int prob_bg_id_w1_{AnalysisTree::UndefValueInt};
+
   // from sim
   int mother_id_w1_{AnalysisTree::UndefValueInt};
   int sim_pT_w1_{AnalysisTree::UndefValueInt};
