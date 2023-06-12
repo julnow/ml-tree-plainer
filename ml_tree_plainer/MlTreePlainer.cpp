@@ -144,7 +144,7 @@ void MlTreePlainer::InitIndices()
   prob_K_id_vtx_ = in_branch_vtx.GetFieldId("prob_K");
   prob_p_id_vtx_ = in_branch_vtx.GetFieldId("prob_p");
   prob_pi_id_vtx_ = in_branch_vtx.GetFieldId("prob_pi");
-  prob_pi_id_vtx_ = in_branch_vtx.GetFieldId("prob_bg");
+  prob_bg_id_vtx_ = in_branch_vtx.GetFieldId("prob_bg");
   
 
   // output tree
