@@ -9,14 +9,14 @@ void MlTreePlainer::Init()
   // definition of detectors and tracks
   tofhits_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Hit> *>(chain->GetPointerToBranch("TofHits"));
   simulated_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Particles *>(chain->GetPointerToBranch("SimParticles"));
-  vtxtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track> *>(chain->GetPointerToBranch("VtxTracks"));
+  rec_particles_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Particles *>(chain->GetPointerToBranch("RecParticles"));
   rec_event_header_ = ANALYSISTREE_UTILS_GET<AnalysisTree::EventHeader *>(chain->GetPointerToBranch("RecEventHeader"));
-  trdtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(chain->GetPointerToBranch("TrdTracks"));
   // definition of matching
   tof2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("TofHits", "SimParticles"))->second;
-  vtx2tof_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TofHits"))->second;
-  vtx2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "SimParticles"))->second;
-  vtx2trd_match_ = chain->GetMatchPointers().find(config_->GetMatchName("VtxTracks", "TrdTracks"))->second;
+  rec2sim_match_ = chain->GetMatchPointers().find(config_->GetMatchName("RecParticles", "TofHits"))->second;
+  rec2tof_match_ = chain->GetMatchPointers().find(config_->GetMatchName("RecParticles", "TofHits"))->second;
+
+
 
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
   // output tree fields (excluding defaults values like momentum etc.)
@@ -38,13 +38,11 @@ void MlTreePlainer::Init()
   out_particles.AddField<int>("q");
   out_particles.AddField<float>("vtx_chi2");
   out_particles.AddField<float>("chi2_ov_ndf_vtx");
-  //trd
-  out_particles.AddField<int>("n_hits_trd");
-  out_particles.AddField<float>("chi2_ov_ndf_trd");
-  out_particles.AddField<float>("e_loss_0");
-  out_particles.AddField<float>("e_loss_1");
-  out_particles.AddField<float>("e_loss_2");
-  out_particles.AddField<float>("e_loss_3");
+  //rec
+  out_particles.AddField<int>("gauss_pid");
+  out_particles.AddField<float>("prob_K");
+  out_particles.AddField<float>("prob_p");
+  out_particles.AddField<float>("prob_pi");
 
   man->AddBranch(plain_branch_, out_particles);
 
@@ -70,12 +68,11 @@ void MlTreePlainer::Exec()
       auto &matched_particle_sim = simulated_->GetChannel(matched_particle_sim_id);
       int mother_id = matched_particle_sim.GetField<int>(mother_id_s_);
       // only matched vtx to tof and same sim
-      const auto matched_particle_vtx_id = vtx2tof_match_->GetMatchInverted(input_particle.GetId());
+      const auto matched_particle_vtx_id = rec2tof_match_->GetMatchInverted(input_particle.GetId());
       auto &matched_particle_vtx = vtxtracks_->GetChannel(matched_particle_vtx_id);
-
       if (matched_particle_vtx_id > 0)
       {
-        const auto matched_particle_sim_vtx_id = vtx2sim_match_->GetMatch(matched_particle_vtx_id);
+        const auto matched_particle_sim_vtx_id = rec2sim_match_->GetMatch(matched_particle_vtx_id);
         if (matched_particle_sim_vtx_id == matched_particle_sim_id)
         {
           
@@ -105,18 +102,12 @@ void MlTreePlainer::Exec()
           float chi2_vtx = matched_particle_vtx.GetField<float>(chi2_id_vtx_);
           int ndf_vtx = matched_particle_vtx.GetField<int>(ndf_id_vtx_);
           output_particle.SetField(chi2_vtx / ndf_vtx, chi2_ov_ndf_id_w1_);
+          // rec
+          output_particle.SetField(matched_particle_vtx.GetField<int>(gauss_pid_id_vtx_), gauss_pid_id_w1_);
+          output_particle.SetField(matched_particle_vtx.GetField<float>(prob_K_id_vtx_), prob_K_id_w1_);
+          output_particle.SetField(matched_particle_vtx.GetField<float>(prob_p_id_vtx_), prob_p_id_w1_);
+          output_particle.SetField(matched_particle_vtx.GetField<float>(prob_pi_id_vtx_), prob_pi_id_w1_);
 
-          const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);
-          if (matched_particle_trd_id > 0){ 
-            //TrdTracks
-            auto& matched_particle_trd = trdtracks_->GetChannel(matched_particle_trd_id);
-            output_particle.SetField(matched_particle_trd.GetField<int>(nhits_id_trd_), nhits_trd_id_w1_);
-            output_particle.SetField(matched_particle_trd.GetField<float>(chi2_ov_ndf_id_trd_), chi2_ov_ndf_trd_id_w1_);
-            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_0_id_trd_), energy_loss_0_id_w1_);
-            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_1_id_trd_), energy_loss_1_id_w1_);
-            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_2_id_trd_), energy_loss_2_id_w1_);
-            output_particle.SetField(matched_particle_trd.GetField<float>(energy_loss_3_id_trd_), energy_loss_3_id_w1_);                                    
-          }
         }
       }
     }
@@ -147,20 +138,17 @@ void MlTreePlainer::InitIndices()
   eta_id_s_ = in_branch_sim.GetFieldId("eta");
 
   // vtx tracks
-  auto in_branch_vtx = config_->GetBranchConfig("VtxTracks");
+  auto in_branch_vtx = config_->GetBranchConfig("RecParticles");
   q_id_vtx_ = in_branch_vtx.GetFieldId("q");
   vtx_chi2_id_vtx_ = in_branch_vtx.GetFieldId("vtx_chi2");
   chi2_id_vtx_ = in_branch_vtx.GetFieldId("chi2");
   ndf_id_vtx_ = in_branch_vtx.GetFieldId("ndf");
-
-  //trdtracks
-  auto in_branch_trd    = config_->GetBranchConfig("TrdTracks");
-  nhits_id_trd_         = in_branch_trd.GetFieldId("n_hits");
-  chi2_ov_ndf_id_trd_   = in_branch_trd.GetFieldId("chi2_ov_ndf");
-  energy_loss_0_id_trd_ = in_branch_trd.GetFieldId("energy_loss_0");
-  energy_loss_1_id_trd_ = in_branch_trd.GetFieldId("energy_loss_1");
-  energy_loss_2_id_trd_ = in_branch_trd.GetFieldId("energy_loss_2");
-  energy_loss_3_id_trd_ = in_branch_trd.GetFieldId("energy_loss_3");
+  // rec
+  gauss_pid_id_vtx_ = in_branch_vtx.GetFieldId("pid");
+  prob_K_id_vtx_ = in_branch_vtx.GetFieldId("prob_K");
+  prob_p_id_vtx_ = in_branch_vtx.GetFieldId("prob_p");
+  prob_pi_id_vtx_ = in_branch_vtx.GetFieldId("prob_pi");
+  
 
   // output tree
   auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
@@ -182,11 +170,10 @@ void MlTreePlainer::InitIndices()
   sim_p_w1_ = out_branch.GetFieldId("sim_p");
   sim_phi_w1_ = out_branch.GetFieldId("sim_phi");
   sim_eta_w1_ = out_branch.GetFieldId("sim_eta");
-  //trd
-  nhits_trd_id_w1_       = out_branch.GetFieldId("n_hits_trd");
-  chi2_ov_ndf_trd_id_w1_ = out_branch.GetFieldId("chi2_ov_ndf_trd");
-  energy_loss_0_id_w1_   = out_branch.GetFieldId("e_loss_0");
-  energy_loss_1_id_w1_   = out_branch.GetFieldId("e_loss_1");
-  energy_loss_2_id_w1_   = out_branch.GetFieldId("e_loss_2");
-  energy_loss_3_id_w1_   = out_branch.GetFieldId("e_loss_3");
+  //rec
+  gauss_pid_id_w1_ = in_branch_vtx.GetFieldId("pid");
+  prob_K_id_w1_ = in_branch_vtx.GetFieldId("prob_K");
+  prob_p_id_w1_ = in_branch_vtx.GetFieldId("prob_p");
+  prob_pi_id_w1_ = in_branch_vtx.GetFieldId("prob_pi");
+
 }
