@@ -1,54 +1,60 @@
 #include "MlTreePlainer.hpp"
+#include "MLTPConfigParser.hpp"
 
 #include "AnalysisTree/TaskManager.hpp"
 #include "AnalysisTree/PlainTreeFiller.hpp"
 
 int main(int argc, char **argv)
 {
-  if (argc != 3)
-  {
-    std::cout << "Wrong number of arguments! Please use:\n  ./main filelist.txt <output-file-name>\n";
-    return EXIT_FAILURE;
-  }
+  std::string config_file_path = "/lustre/cbm/users/tfic/at_tree_plainer/example_config.json";
 
-  const bool make_plain_ttree{true};
+  auto parser = MLTPConfig::Parser(config_file_path);
+  parser.Print();
 
-  const std::string &filename = argv[1];
-  const std::string &outfilename = argv[1];
+  // if (argc != 3)
+  // {
+  //   std::cout << "Wrong number of arguments! Please use:\n  ./main filelist.txt <output-file-name>\n";
+  //   return EXIT_FAILURE;
+  // }
 
-  auto *man = AnalysisTree::TaskManager::GetInstance();
-  man->SetOutputName("intermediate_tree.root", "pTree");
+  // const bool make_plain_ttree{true};
 
-  auto *ml_plainer_task = new MlTreePlainer();
+  // const std::string &filename = argv[1];
+  // const std::string &outfilename = argv[1];
 
-  // AnalysisTree::Cuts* cuts = new AnalysisTree::Cuts("cuts", {AnalysisTree::EqualsCut("Candidates.pid", 3312)});
-  // at_plainer_task->SetCuts(cuts);
+  // auto *man = AnalysisTree::TaskManager::GetInstance();
+  // man->SetOutputName("intermediate_tree.root", "pTree");
 
-  man->AddTask(ml_plainer_task);
+  // auto *ml_plainer_task = new MlTreePlainer();
 
-  man->Init({filename}, {"rTree"});
-  man->Run(-1); // -1 = all events
-  man->Finish();
+  // // AnalysisTree::Cuts* cuts = new AnalysisTree::Cuts("cuts", {AnalysisTree::EqualsCut("Candidates.pid", 3312)});
+  // // at_plainer_task->SetCuts(cuts);
 
-  if (make_plain_ttree)
-  {
-    man->ClearTasks();
-    std::ofstream filelist;
-    filelist.open("filelist.txt");
-    filelist << "intermediate_tree.root\n";
-    filelist.close();
+  // man->AddTask(ml_plainer_task);
 
-    auto *tree_task = new AnalysisTree::PlainTreeFiller();
-    std::string branchname_rec = "Complex";
-    tree_task->SetInputBranchNames({branchname_rec});
-    tree_task->SetOutputName("analysis_plain_ttree.root", "plain_tree");
-    tree_task->AddBranch(branchname_rec);
+  // man->Init({filename}, {"rTree"});
+  // man->Run(-1); // -1 = all events
+  // man->Finish();
 
-    man->AddTask(tree_task);
+  // if (make_plain_ttree)
+  // {
+  //   man->ClearTasks();
+  //   std::ofstream filelist;
+  //   filelist.open("filelist.txt");
+  //   filelist << "intermediate_tree.root\n";
+  //   filelist.close();
 
-    man->Init({"filelist.txt"}, {"pTree"});
-    man->Run(-1); // -1 = all events
-    man->Finish();
-  }
+  //   auto *tree_task = new AnalysisTree::PlainTreeFiller();
+  //   std::string branchname_rec = "Complex";
+  //   tree_task->SetInputBranchNames({branchname_rec});
+  //   tree_task->SetOutputName("analysis_plain_ttree.root", "plain_tree");
+  //   tree_task->AddBranch(branchname_rec);
+
+  //   man->AddTask(tree_task);
+
+  //   man->Init({"filelist.txt"}, {"pTree"});
+  //   man->Run(-1); // -1 = all events
+  //   man->Finish();
+  // }
   return EXIT_SUCCESS;
 }
