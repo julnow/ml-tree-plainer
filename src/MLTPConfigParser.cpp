@@ -12,7 +12,16 @@ namespace MLTPConfig
     }
     std::vector<Branch> Parser::ParseBranches()
     {
-        return {ParseBranch(root_)};
+        std::vector<Branch> branches;
+        auto branches_root = root_.get_child("branches");
+        for (pt::ptree::value_type &branch_tree : branches_root)
+        {
+            std::string branch_name = branch_tree.first;
+            auto vars_root = branch_tree.second;
+            auto branch = ParseBranch(vars_root, branch_name);
+            branches.push_back(branch);
+        }
+        return branches;
     }
 
     std::string Parser::ParseInputFileList()
@@ -32,12 +41,28 @@ namespace MLTPConfig
 
     void Parser::Print()
     {
+        auto branches = ParseBranches();
+        for (auto &branch : branches)
+        {
+            std::cout << "Branch name: " << branch.name << std::endl;
+            std::cout << "Branch type: " << branch.type << std::endl;
+            for (auto &var : branch.vars)
+            {
+                std::cout << '\t' << "var in name: " << var.in_name << std::endl;
+                std::cout << '\t' << "var out name: " << var.out_name << std::endl;
+                std::cout << '\t' << "var type: " << var.type << std::endl;
+            }
+        }
+
         std::cout << "input file list: " << ParseInputFileList() << std::endl;
         std::cout << "output file name: " << ParseOutputFileName() << std::endl;
         std::cout << "output branch name: " << ParseOutputBranchName() << std::endl;
     }
 
-    Branch Parser::ParseBranch(boost::property_tree::ptree root) { return {"a", "a", {ParseVar(root_)}}; }
+    Branch Parser::ParseBranch(boost::property_tree::ptree branch_root, std::string branch_name)
+    {
+        return {branch_name, "a", {ParseVar(root_)}};
+    }
 
     Var Parser::ParseVar(boost::property_tree::ptree root) { return {"a", "a", "a"}; }
 

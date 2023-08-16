@@ -33,7 +33,7 @@ namespace MLTPConfig
         void Print();
 
     private:
-        Branch ParseBranch(boost::property_tree::ptree root);
+        Branch ParseBranch(boost::property_tree::ptree branch_root, std::string branch_name);
         Var ParseVar(boost::property_tree::ptree root);
 
         void ValidateVar(Var &var);
