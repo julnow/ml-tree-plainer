@@ -34,7 +34,8 @@ namespace MLTPConfig
 
     private:
         Branch ParseBranch(boost::property_tree::ptree branch_root, std::string branch_name);
-        Var ParseVar(boost::property_tree::ptree root);
+        std::vector<Var> ParseVars(boost::property_tree::ptree vars_root);
+        Var ParseVar(boost::property_tree::ptree var_root);
 
         void ValidateVar(Var &var);
         void ValidateBranch(Branch &branch);
