@@ -60,6 +60,9 @@ if(ROOT_FOUND)
 endif(ROOT_FOUND)  
 add_target_property(MLTP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
 
+find_package(Boost 1.78 REQUIRED COMPONENTS json)
+target_link_libraries(MLTP Boost::boost Boost::json)
+
 add_executable(main src/main.cpp)
 add_dependencies(main MLTP)
 add_target_property(main COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
