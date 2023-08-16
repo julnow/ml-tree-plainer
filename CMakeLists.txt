@@ -47,20 +47,20 @@ include_directories(${CMAKE_SOURCE_DIR} ${AnalysisTree_INCLUDE_DIR})
 
 #************
 set(SOURCES
-  MlTreePlainer.cpp
+  src/MlTreePlainer.cpp
   )
 
 string(REPLACE ".cpp" ".hpp" HEADERS "${SOURCES}")
 add_library(MLTP SHARED ${SOURCES} G__MLTP.cxx)
         
 if(ROOT_FOUND)
-  ROOT_GENERATE_DICTIONARY(G__MLTP ${HEADERS} LINKDEF MLTPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+  ROOT_GENERATE_DICTIONARY(G__MLTP ${HEADERS} LINKDEF src/MLTPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
   include_directories(${CMAKE_SOURCE_DIR})
   target_link_libraries(MLTP ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
 endif(ROOT_FOUND)  
 add_target_property(MLTP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
 
-add_executable(main main.cpp)
+add_executable(main src/main.cpp)
 add_dependencies(main MLTP)
 add_target_property(main COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
 target_link_libraries(main MLTP)
@@ -112,7 +112,7 @@ set(MLTP_INCLUDE_DIR "include")
 set(MLTP_LIBRARY_DIR "lib")
 
 configure_package_config_file(
-        MLTPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake
+        src/MLTPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake
         INSTALL_DESTINATION ${ConfigPackageLocation}
         PATH_VARS MLTP_INCLUDE_DIR MLTP_LIBRARY_DIR
 )

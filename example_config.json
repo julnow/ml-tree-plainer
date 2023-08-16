@@ -1,0 +1,27 @@
+{
+    "branches": {
+        "RecEventHeader": {
+            "vars": [
+                {
+                    "inName": "M",
+                    "outName": "M",
+                    "type": "float"
+                }
+            ],
+            "type": "EventHeader"
+        },
+        "TofHits": {
+            "vars": [
+                {
+                    "inName": "M",
+                    "outName": "M",
+                    "type": "float"
+                }
+            ],
+            "type": "Detector"
+        }
+    },
+    "inputFileList": "filelist.txt",
+    "outputFileName": "out.root",
+    "outputBranchName": "Complex"
+}
