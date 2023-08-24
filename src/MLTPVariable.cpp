@@ -3,7 +3,7 @@
 
 namespace MLTP
 {
-    Variable::Variable(MLTP::Config::Var var_config) : in_name_{var_config.in_name}, out_name_{var_config.out_name}, type_{var_config.type}
+    Variable::Variable(MLTPConfig::Var var_config) : in_name_{var_config.in_name}, out_name_{var_config.out_name}, type_{var_config.type}
     {
     }
 
@@ -28,22 +28,22 @@ namespace MLTP
         }
     }
 
-    void Variable::SetField(AnalysisTree::Container &out_particle, AnalysisTree::Container &in_particle)
+    void Variable::SetField(AnalysisTree::Container &out_particle, const AnalysisTree::Container &in_particle)
     {
         if (type_ == "int")
         {
-            auto value = matched_particle_vtx.GetField<int>(in_id_);
-            output_particle.SetField(value, out_id_);
+            auto value = in_particle.GetField<int>(in_id_);
+            out_particle.SetField(value, out_id_);
         }
         else if (type_ == "float")
         {
-            auto value = matched_particle_vtx.GetField<float>(in_id_);
-            output_particle.SetField(value, out_id_);
+            auto value = in_particle.GetField<float>(in_id_);
+            out_particle.SetField(value, out_id_);
         }
         else if (type_ == "bool")
         {
-            auto value = matched_particle_vtx.GetField<bool>(in_id_);
-            output_particle.SetField(value, out_id_);
+            auto value = in_particle.GetField<bool>(in_id_);
+            out_particle.SetField(value, out_id_);
         }
         else
         {

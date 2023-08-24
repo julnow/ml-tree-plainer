@@ -23,16 +23,16 @@ void MlTreePlainer::Init()
   AnalysisTree::BranchConfig out_particles(json_config_.output_branch_name, AnalysisTree::DetType::kParticle);
 
   auto event_header_config = FindBranch("RecEventHeader");
-  auto tof_config = FindBranch("TofParticles");
+  auto tof_config = FindBranch("TofHits");
   auto vtx_config = FindBranch("VtxTracks");
   auto sim_config = FindBranch("SimParticles");
   auto trd_config = FindBranch("TrdTracks");
 
-  event_header_ = new MLTP::Branch(event_header_config, json_config_, out_particles);
-  tof_ = new MLTP::Branch(tof_config, json_config_, out_particles);
-  vtx_ = new MLTP::Branch(vtx_config, json_config_, out_particles);
-  sim_ = new MLTP::Branch(sim_config, json_config_, out_particles);
-  trd_ = new MLTP::Branch(trd_config, json_config_, out_particles);
+  event_header_ = new MLTP::Branch(event_header_config, config_, out_particles);
+  tof_ = new MLTP::Branch(tof_config, config_, out_particles);
+  vtx_ = new MLTP::Branch(vtx_config, config_, out_particles);
+  sim_ = new MLTP::Branch(sim_config, config_, out_particles);
+  trd_ = new MLTP::Branch(trd_config, config_, out_particles);
 
   event_header_->AddFields();
   tof_->AddFields();
@@ -70,8 +70,8 @@ void MlTreePlainer::Exec()
           auto &output_particle = plain_branch_->AddChannel(out_config->GetBranchConfig(plain_branch_->GetId()));
           vtx_->SetFields(output_particle, matched_particle_vtx);
           sim_->SetFields(output_particle, matched_particle_sim);
-          tof->SetFields(output_particle, input_particle);
-          tof->SetFields(output_particle, rec_event_header_);
+          tof_->SetFields(output_particle, input_particle);
+          // event_header_->SetFields(output_particle, rec_event_header_);
 
           const auto matched_particle_trd_id = vtx2trd_match_->GetMatch(matched_particle_vtx_id);
           if (matched_particle_trd_id > 0)

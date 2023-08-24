@@ -1,27 +1,42 @@
 {
     "branches": {
-        "RecEventHeader": {
-            "vars": [
-                {
-                    "inName": "M",
-                    "outName": "M",
-                    "type": "float"
-                }
-            ],
-            "type": "EventHeader"
-        },
         "TofHits": {
             "vars": [
                 {
-                    "inName": "M",
-                    "outName": "M",
+                    "inName": "mass2",
+                    "outName": "mass2",
+                    "type": "float"
+                },
+                {
+                    "inName": "qp_tof",
+                    "outName": "qp_tof",
+                    "type": "float"
+                }
+            ],
+            "type": "Detector"
+        },
+        "VtxTracks": {
+            "vars": [
+                {
+                    "inName": "chi2",
+                    "outName": "chi2",
+                    "type": "float"
+                }
+            ],
+            "type": "Detector"
+        },
+        "SimParticles": {
+            "vars": [
+                {
+                    "inName": "phi",
+                    "outName": "phi_sim",
                     "type": "float"
                 }
             ],
             "type": "Detector"
         }
     },
-    "inputFileList": "/lustre/cbm/users/tfic/at_tree_plainer/filelist.txt",
+    "inputFileList": "/lustre/cbm/users/tfic/at_tree_plainer/filelist_test.txt",
     "outputFileName": "/lustre/cbm/users/tfic/at_tree_plainer/out.root",
     "outputBranchName": "Complex"
 }

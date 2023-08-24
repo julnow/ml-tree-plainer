@@ -14,7 +14,7 @@ namespace MLTP
         Variable(MLTPConfig::Var var_config);
 
         void AddField(AnalysisTree::BranchConfig &out_particles);
-        void SetField(AnalysisTree::Container &out_particle, AnalysisTree::Container &in_particle);
+        void SetField(AnalysisTree::Container &out_particle, const AnalysisTree::Container &in_particle);
         void InitInId(const AnalysisTree::BranchConfig &in_branch_config);
         void InitOutId(const AnalysisTree::BranchConfig &out_branch_config);
 

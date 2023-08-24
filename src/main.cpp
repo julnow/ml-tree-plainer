@@ -20,7 +20,7 @@ int main(int argc, char **argv)
   man->SetOutputName("intermediate_tree.root", "pTree");
 
   auto *ml_plainer_task = new MlTreePlainer();
-  ml_plainer_task.SetConfig(config);
+  ml_plainer_task->SetConfig(config);
 
   // AnalysisTree::Cuts* cuts = new AnalysisTree::Cuts("cuts", {AnalysisTree::EqualsCut("Candidates.pid", 3312)});
   // at_plainer_task->SetCuts(cuts);
