@@ -49,6 +49,8 @@ include_directories(${CMAKE_SOURCE_DIR} ${AnalysisTree_INCLUDE_DIR})
 set(SOURCES
   src/MlTreePlainer.cpp
   src/MLTPConfigParser.cpp
+  src/MLTPVariable.cpp
+  src/MLTPBranch.cpp
   )
 
 string(REPLACE ".cpp" ".hpp" HEADERS "${SOURCES}")

@@ -5,16 +5,50 @@
 
 namespace MLTPConfig
 {
-    namespace pt = boost::property_tree;
-    Parser::Parser(std::string json_config_path) : json_config_path_(json_config_path)
+    using namespace boost::property_tree;
+
+    Config Parser::Parse(std::string json_config_path)
     {
-        pt::read_json(json_config_path_, root_);
+        Parser parser{json_config_path};
+        auto branches = parser.ParseBranches();
+        auto input_filelist = parser.ParseInputFileList();
+        auto output_filename = parser.ParseOutputFileName();
+        auto output_branch_name = parser.ParseOutputBranchName();
+        return {input_filelist, output_filename, output_branch_name, branches};
     }
+
+    void Parser::Print(const Config &config)
+    {
+        using namespace std;
+        cout << "CONFIG:" << '\n';
+        cout << "input file list: " << config.input_filelist << '\n';
+        cout << "output file name: " << config.output_filename << '\n';
+        cout << "output branch name: " << config.output_branch_name << '\n';
+        cout << "Branches: " << config.output_branch_name << '\n';
+        for (auto &branch : config.branches)
+        {
+            cout << "Branch name: " << branch.name << '\n';
+            cout << "Branch type: " << branch.type << '\n';
+            for (auto &var : branch.vars)
+            {
+                cout << '\t' << "var in name: " << var.in_name << '\n';
+                cout << '\t' << "var out name: " << var.out_name << '\n';
+                cout << '\t' << "var type: " << var.type << '\n';
+            }
+        }
+        cout << endl;
+    }
+
+    Parser::Parser(const std::string json_config_path) : json_config_path_(json_config_path)
+    {
+        read_json(json_config_path_, root_);
+    }
+
     std::vector<Branch> Parser::ParseBranches()
     {
         std::vector<Branch> branches;
         auto branches_root = root_.get_child("branches");
-        for (pt::ptree::value_type &branch_tree : branches_root)
+        for (ptree::value_type &branch_tree : branches_root)
         {
             std::string branch_name = branch_tree.first;
             auto branch_root = branch_tree.second;
@@ -39,27 +73,7 @@ namespace MLTPConfig
         return root_.get<std::string>("outputBranchName");
     }
 
-    void Parser::Print()
-    {
-        auto branches = ParseBranches();
-        for (auto &branch : branches)
-        {
-            std::cout << "Branch name: " << branch.name << std::endl;
-            std::cout << "Branch type: " << branch.type << std::endl;
-            for (auto &var : branch.vars)
-            {
-                std::cout << '\t' << "var in name: " << var.in_name << std::endl;
-                std::cout << '\t' << "var out name: " << var.out_name << std::endl;
-                std::cout << '\t' << "var type: " << var.type << std::endl;
-            }
-        }
-
-        std::cout << "input file list: " << ParseInputFileList() << std::endl;
-        std::cout << "output file name: " << ParseOutputFileName() << std::endl;
-        std::cout << "output branch name: " << ParseOutputBranchName() << std::endl;
-    }
-
-    Branch Parser::ParseBranch(boost::property_tree::ptree branch_root, std::string branch_name)
+    Branch Parser::ParseBranch(const ptree branch_root, std::string branch_name)
     {
         std::string branch_type = branch_root.get<std::string>("type");
         auto vars_root = branch_root.get_child("vars");
@@ -70,10 +84,10 @@ namespace MLTPConfig
         return branch;
     }
 
-    std::vector<Var> Parser::ParseVars(pt::ptree vars_root)
+    std::vector<Var> Parser::ParseVars(ptree vars_root)
     {
         std::vector<Var> vars;
-        for (pt::ptree::value_type &var_tree : vars_root)
+        for (ptree::value_type &var_tree : vars_root)
         {
             auto var_root = var_tree.second;
             Var var = ParseVar(var_root);
@@ -82,7 +96,7 @@ namespace MLTPConfig
         return vars;
     }
 
-    Var Parser::ParseVar(pt::ptree var_root)
+    Var Parser::ParseVar(ptree var_root)
     {
         std::string in_name = var_root.get<std::string>("inName");
         std::string out_name = var_root.get<std::string>("outName");
@@ -92,12 +106,12 @@ namespace MLTPConfig
         return var;
     }
 
-    void Parser::ValidateVar(Var &var)
+    void Parser::ValidateBranch(const Branch &branch)
     {
         assert(true);
     }
 
-    void Parser::ValidateBranch(Branch &branch)
+    void Parser::ValidateVar(const Var &var)
     {
         assert(true);
     }
@@ -105,9 +119,9 @@ namespace MLTPConfig
     // std::vector<BinConfig> ONNXConfigParser::ParseBinConfigs()
     // {
     //     std::vector<BinConfig> bin_configs;
-    //     for (pt::ptree::value_type &model_dict_val : root_.get_child("model_paths"))
+    //     for (ptree::value_type &model_dict_val : root_.get_child("model_paths"))
     //     {
-    //         pt::ptree model_dict = model_dict_val.second;
+    //         ptree model_dict = model_dict_val.second;
     //         float min = model_dict.get<float>("lo");
     //         float max = model_dict.get<float>("hi");
     //         std::string path = model_dict.get<std::string>("path");
@@ -126,7 +140,7 @@ namespace MLTPConfig
     // std::vector<std::string> ONNXConfigParser::ParseModelFeatures()
     // {
     //     std::vector<std::string> model_features;
-    //     for (pt::ptree::value_type &feature_name : root_.get_child("model_features"))
+    //     for (ptree::value_type &feature_name : root_.get_child("model_features"))
     //     {
     //         std::string model_feature = feature_name.second.data();
     //         model_features.push_back(model_feature);

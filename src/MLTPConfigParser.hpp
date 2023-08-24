@@ -7,6 +7,8 @@
 
 namespace MLTPConfig
 {
+    using namespace boost::property_tree;
+
     struct Var
     {
         std::string in_name;
@@ -20,27 +22,36 @@ namespace MLTPConfig
         std::vector<Var> vars;
     };
 
+    struct Config
+    {
+        std::string input_filelist;
+        std::string output_filename;
+        std::string output_branch_name;
+        std::vector<Branch> branches;
+    };
+
     class Parser
     {
     public:
+        static Config Parse(const std::string json_config_path);
+        static void Print(const Config &config);
+
+    private:
         Parser(std::string json_config_path);
 
         std::vector<Branch> ParseBranches();
+        Branch ParseBranch(ptree branch_root, std::string branch_name);
+        std::vector<Var> ParseVars(ptree vars_root);
+        Var ParseVar(ptree var_root);
+
         std::string ParseInputFileList();
         std::string ParseOutputFileName();
         std::string ParseOutputBranchName();
 
-        void Print();
+        static void ValidateBranch(const Branch &branch);
+        static void ValidateVar(const Var &var);
 
-    private:
-        Branch ParseBranch(boost::property_tree::ptree branch_root, std::string branch_name);
-        std::vector<Var> ParseVars(boost::property_tree::ptree vars_root);
-        Var ParseVar(boost::property_tree::ptree var_root);
-
-        void ValidateVar(Var &var);
-        void ValidateBranch(Branch &branch);
-
-        boost::property_tree::ptree root_;
-        std::string json_config_path_;
+        const std::string json_config_path_;
+        ptree root_;
     };
 }
