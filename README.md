@@ -6,6 +6,7 @@ at_tree_plainer is developed for conversion of complex AnalysisTree structures i
 
 It is based on at_tree_plainer by Oleksii Lubynets.
 
+
 ## Pre-requirements
 
 ### Root
@@ -32,7 +33,7 @@ As of 25.08.2023 boost 1.78.0 bundled with FairSoft is used.
 
 Clone at_tree_plainer
 
-    git clone git@git.cbm.gsi.de:o.lubynets/at_tree_plainer.git
+    git clone git@github.com:julnow/ml-tree-plainer.git
     
 Source ROOT
 
@@ -52,6 +53,9 @@ Install at_tree_plainer
     cd build
     cmake -DCMAKE_INSTALL_PREFIX=../install ..
     make -j install
+For debugging the flag
+    ``DCMAKE_BUILD_TYPE=DEBUG``
+should be added
     
 ## Run locally
 
@@ -98,5 +102,6 @@ To use with slurm, go into the `scripts` directory and :
 ```
 ./submit_job <path-to-cofig-file> <path-to-output-dir>
 ```
+
 
 Tested only on GSI Green Cube slurm setup.
