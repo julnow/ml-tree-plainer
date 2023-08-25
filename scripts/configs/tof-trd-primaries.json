@@ -1,0 +1,147 @@
+{
+    "branches": {
+        "RecEventHeader": {
+            "vars": [
+                {
+                    "inName": "M",
+                    "outName": "M",
+                    "type": "int"
+                }
+            ]
+        },
+        "TofHits": {
+            "vars": [
+                {
+                    "inName": "mass2",
+                    "outName": "mass2",
+                    "type": "float"
+                },
+                {
+                    "inName": "l",
+                    "outName": "l_tof",
+                    "type": "float"
+                },
+                {
+                    "inName": "t",
+                    "outName": "t_tof",
+                    "type": "float"
+                }
+            ]
+        },
+        "SimParticles": {
+            "vars": [
+                {
+                    "inName": "mother_id",
+                    "outName": "mother_id",
+                    "type": "int"
+                },
+                {
+                    "inName": "pT",
+                    "outName": "pT_sim",
+                    "type": "float"
+                },
+                {
+                    "inName": "p",
+                    "outName": "p_sim",
+                    "type": "float"
+                },
+                {
+                    "inName": "phi",
+                    "outName": "phi_sim",
+                    "type": "float"
+                },
+                {
+                    "inName": "eta",
+                    "outName": "eta_sim",
+                    "type": "float"
+                },
+                {
+                    "inName": "pid",
+                    "outName": "pid",
+                    "type": "int"
+                }
+            ]
+        },
+        "VtxTracks": {
+            "vars": [
+                {
+                    "inName": "chi2",
+                    "outName": "chi2",
+                    "type": "float"
+                },
+                {
+                    "inName": "q",
+                    "outName": "q",
+                    "type": "int"
+                },
+                {
+                    "inName": "vtx_chi2",
+                    "outName": "vtx_chi2",
+                    "type": "float"
+                },
+                {
+                    "inName": "ndf",
+                    "outName": "ndf",
+                    "type": "float"
+                },
+                {
+                    "inName": "px",
+                    "outName": "px",
+                    "type": "float"
+                },
+                {
+                    "inName": "py",
+                    "outName": "py",
+                    "type": "float"
+                },
+                {
+                    "inName": "pz",
+                    "outName": "pz",
+                    "type": "float"
+                },
+                {
+                    "inName": "p",
+                    "outName": "p",
+                    "type": "float"
+                }
+            ]
+        },
+        "TrdTracks": {
+            "vars": [
+                {
+                    "inName": "n_hits",
+                    "outName": "n_hits_trd",
+                    "type": "int"
+                },
+                {
+                    "inName": "energy_loss_0",
+                    "outName": "eloss_0",
+                    "type": "float"
+                },
+                {
+                    "inName": "energy_loss_1",
+                    "outName": "eloss_1",
+                    "type": "float"
+                },
+                {
+                    "inName": "energy_loss_2",
+                    "outName": "eloss_2",
+                    "type": "float"
+                },
+                {
+                    "inName": "energy_loss_3",
+                    "outName": "eloss_3",
+                    "type": "float"
+                },
+                {
+                    "inName": "chi2_ov_ndf",
+                    "outName": "chi2_ov_ndf_trd",
+                    "type": "float"
+                }
+            ]
+        }
+    },
+    "inputFileList": "/lustre/cbm/users/tfic/at_tree_plainer/scripts/configs/filelist_test.txt",
+    "outputFileName": "/lustre/cbm/users/tfic/pid_plain_trees/trees/test/test.root",
+    "outputBranchName": "Complex"
+}

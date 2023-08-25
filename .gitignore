@@ -3,3 +3,5 @@ install
 *.check_cache
 *.log
 */CMakeFiles/*
+
+export.sh
