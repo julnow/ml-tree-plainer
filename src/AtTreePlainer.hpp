@@ -24,11 +24,6 @@ public:
         json_config_ = config;
     }
 
-    void SetCuts(AnalysisTree::Cuts* cuts)
-    {
-        cuts_ = cuts;
-    }
-
 protected:
     ATTPConfig::Branch FindBranch(std::string branch_name);
 
@@ -44,8 +39,6 @@ protected:
     AnalysisTree::Matching* vtx2trd_match_{nullptr};
 
     AnalysisTree::Particles* plain_branch_{nullptr};
-
-    AnalysisTree::Cuts* cuts_{nullptr};
 
     ATTP::Branch* event_header_;
     ATTP::Branch* tof_;

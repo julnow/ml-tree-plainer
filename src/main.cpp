@@ -23,9 +23,6 @@ int main(int argc, char** argv)
     auto* ml_plainer_task = new AtTreePlainer();
     ml_plainer_task->SetConfig(config);
 
-    // AnalysisTree::Cuts* cuts = new AnalysisTree::Cuts("cuts", {AnalysisTree::EqualsCut("Candidates.pid", 3312)});
-    // at_plainer_task->SetCuts(cuts);
-
     man->AddTask(ml_plainer_task);
 
     man->Init({config.input_filelist}, {"rTree"});
