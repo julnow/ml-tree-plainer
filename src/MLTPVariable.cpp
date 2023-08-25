@@ -3,21 +3,26 @@
 
 namespace MLTP
 {
-    Variable::Variable(MLTPConfig::Var var_config) : in_name_{var_config.in_name}, out_name_{var_config.out_name}, type_{var_config.type}
+    namespace at = AnalysisTree;
+
+    Variable::Variable(MLTPConfig::Var var_config) :
+        in_name_{var_config.in_name},
+        out_name_{var_config.out_name},
+        type_{var_config.type}
     {
     }
 
-    void Variable::AddField(AnalysisTree::BranchConfig &out_particles)
+    void Variable::AddField(at::BranchConfig& out_particles)
     {
-        if (type_ == "int")
+        if(type_ == "int")
         {
             out_particles.AddField<int>(out_name_);
         }
-        else if (type_ == "float")
+        else if(type_ == "float")
         {
             out_particles.AddField<float>(out_name_);
         }
-        else if (type_ == "bool")
+        else if(type_ == "bool")
         {
             out_particles.AddField<bool>(out_name_);
         }
@@ -28,38 +33,22 @@ namespace MLTP
         }
     }
 
-    void Variable::SetField(AnalysisTree::Container &out_particle, const AnalysisTree::Container &in_particle)
-    {
-        if (type_ == "int")
-        {
-            auto value = in_particle.GetField<int>(in_id_);
-            out_particle.SetField(value, out_id_);
-        }
-        else if (type_ == "float")
-        {
-            auto value = in_particle.GetField<float>(in_id_);
-            out_particle.SetField(value, out_id_);
-        }
-        else if (type_ == "bool")
-        {
-            auto value = in_particle.GetField<bool>(in_id_);
-            out_particle.SetField(value, out_id_);
-        }
-        else
-        {
-            std::cout << "Unsupported type: " << type_ << std::endl;
-            exit(1);
-        }
-    }
-
-    void Variable::InitInId(const AnalysisTree::BranchConfig &in_branch_config)
+    void Variable::InitInId(const at::BranchConfig& in_branch_config)
     {
         in_id_ = in_branch_config.GetFieldId(in_name_);
     }
 
-    void Variable::InitOutId(const AnalysisTree::BranchConfig &out_branch_config)
+    void Variable::InitOutId(const at::BranchConfig& out_branch_config)
     {
         out_id_ = out_branch_config.GetFieldId(out_name_);
+    }
+    void Variable::Print()
+    {
+        using namespace std;
+        cout << in_name_ << " : " << in_id_;
+        cout << " -> ";
+        cout << out_name_ << " : " << out_id_;
+        cout << endl;
     }
 
 }

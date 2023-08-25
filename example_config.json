@@ -21,6 +21,26 @@
                     "inName": "chi2",
                     "outName": "chi2",
                     "type": "float"
+                },
+                {
+                    "inName": "px",
+                    "outName": "px",
+                    "type": "float"
+                },
+                {
+                    "inName": "py",
+                    "outName": "py",
+                    "type": "float"
+                },
+                {
+                    "inName": "pz",
+                    "outName": "pz",
+                    "type": "float"
+                },
+                {
+                    "inName": "p",
+                    "outName": "p",
+                    "type": "float"
                 }
             ],
             "type": "Detector"

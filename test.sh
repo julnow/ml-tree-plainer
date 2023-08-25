@@ -7,6 +7,7 @@ LD_LIBRARY_PATH="/lustre/cbm/users/tfic/at_tree_plainer/install/lib:$LD_LIBRARY_
 echo "$LD_LIBRARY_PATH"
 
 CONFIG="/lustre/cbm/users/tfic/at_tree_plainer/example_config.json"
+EXE="/lustre/cbm/users/tfic/at_tree_plainer/install/bin/main"
 
-/lustre/cbm/users/tfic/at_tree_plainer/install/bin/main $CONFIG
+gdb --args $EXE $CONFIG
 
