@@ -2,7 +2,8 @@
 
 ## General information
 
-ml_tree_plainer program is developed for conversion of complex AnalysisTree structure into plain tree (either AnalysisTree or ROOT::TTree).
+at_tree_plainer is developed for conversion of complex AnalysisTree structures into the plain tree format (either AnalysisTree or ROOT::TTree).
+
 It is based on at_tree_plainer by Oleksii Lubynets.
 
 ## Pre-requirements
@@ -21,6 +22,12 @@ https://github.com/HeavyIonAnalysis/AnalysisTree
 
 Follow instructions
 
+### Boost
+
+https://www.boost.org/
+
+As of 25.08.2023 boost 1.78.0 bundled with FairSoft is used.
+
 ## Installation
 
 Clone at_tree_plainer
@@ -29,29 +36,67 @@ Clone at_tree_plainer
     
 Source ROOT
 
-    source /path-to-root/install/bin/thisroot.sh
+    source <path-to-root>/install/bin/thisroot.sh
     
 Export AnalysisTree libraries
 
-    export AnalysisTree_DIR=/path-to-analysistree/install/lib/cmake/AnalysisTree
+    export AnalysisTree_DIR=<path-to-analysistree>/install/lib/cmake/AnalysisTree
     
+Export Boost dir
+
+    export BOOST_DIR=<path-to-fairsoft-install>/lib/cmake/Boost-1.78.0
+
 Install at_tree_plainer
     
-    mkdir build
+    mkdir build install
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/path-to-install-ml_tree_plainer /path-to-source-ml_tree_plainer
+    cmake -DCMAKE_INSTALL_PREFIX=../install ..
     make -j install
     
-## First run
+## Run locally
 
-./main file_list.txt
-where file_list.txt should contain names of PFSimple output AnalysisTree files
+./main config.json
 
-## Configuration
+example config.json:
 
-If one wants to add conersion of another fields then one should modify ATreePlainer class in several places:
- - add field ids as class members in .hpp
- - ad corresponding fields in ATreePlainer::Init()
- - initialize field ids in ATreePlainer::InitIndices()
- - perform copyng the field contentin ATreePlainer::Exec()
+```
+{
+    "branches": {
+        "TofHits": {
+            "vars": [
+                {
+                    "inName": "mass2",
+                    "outName": "mass2",
+                    "type": "float"
+                }
+            ]
+        }
+    },
+    "inputFileList": "~/filelist.txt",
+    "outputFileName": "~/test.root",
+    "outputBranchName": "Complex"
+}
+```
 
+Where `filelist.txt` contains paths to PFSimple output AnalysisTree files. 
+If one wishes to add more fields or more branches, they just need to be added to the json config.
+
+
+As of now, the available branches are:
+- TofHits
+- SimParticles
+- EventHeader
+- VtxTracks
+- TrdTracks
+
+And they can be easily expanded in the future.
+
+## Run with Slurm
+
+To use with slurm, go into the `scripts` directory and :
+
+```
+./submit_job <path-to-cofig-file> <path-to-output-dir>
+```
+
+Tested only on GSI Green Cube slurm setup.
