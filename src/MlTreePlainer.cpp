@@ -62,17 +62,6 @@ void MlTreePlainer::Init()
 
 void MlTreePlainer::Exec()
 {
-    std::cout << "EventHeader:\n";
-    event_header_->Print();
-    std::cout << "TOF:\n";
-    tof_->Print();
-    std::cout << "VTX:\n";
-    vtx_->Print();
-    std::cout << "SIM:\n";
-    sim_->Print();
-    std::cout << "TRD:\n";
-    trd_->Print();
-
     plain_branch_->ClearChannels();
 
     auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
@@ -101,7 +90,7 @@ void MlTreePlainer::Exec()
                     vtx_->SetFields<at::Track>(output_particle, matched_particle_vtx);
                     tof_->SetFields<at::Hit>(output_particle, input_particle);
                     sim_->SetFields<at::Particle>(output_particle, matched_particle_sim);
-                    // event_header_->SetFields(output_particle, rec_event_header_);
+                    event_header_->SetFields<at::EventHeader>(output_particle, *rec_event_header_);
 
                     const auto matched_particle_trd_id =
                         vtx2trd_match_->GetMatch(matched_particle_vtx_id);
@@ -120,19 +109,28 @@ void MlTreePlainer::Exec()
 
 void MlTreePlainer::InitIndices()
 {
-    // input fields
     event_header_->InitInIndices();
     tof_->InitInIndices();
     vtx_->InitInIndices();
     sim_->InitInIndices();
     trd_->InitInIndices();
 
-    // output tree
     event_header_->InitOutIndices();
     tof_->InitOutIndices();
     vtx_->InitOutIndices();
     sim_->InitOutIndices();
     trd_->InitOutIndices();
+
+    std::cout << "EventHeader:\n";
+    event_header_->Print();
+    std::cout << "TofHits:\n";
+    tof_->Print();
+    std::cout << "VtxTracks:\n";
+    vtx_->Print();
+    std::cout << "SimParticles:\n";
+    sim_->Print();
+    std::cout << "TrdTracks:\n";
+    trd_->Print();
 }
 
 void MlTreePlainer::SetConfig(MLTPConfig::Config config)
@@ -149,5 +147,5 @@ MLTPConfig::Branch MlTreePlainer::FindBranch(std::string branch_name)
             return b;
         }
     }
-    return {branch_name, "", {}};
+    return {branch_name, {}};
 }

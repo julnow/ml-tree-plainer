@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -18,7 +18,6 @@ namespace MLTPConfig
     struct Branch
     {
         std::string name;
-        std::string type;
         std::vector<Var> vars;
     };
 
@@ -34,7 +33,7 @@ namespace MLTPConfig
     {
     public:
         static Config Parse(const std::string json_config_path);
-        static void Print(const Config &config);
+        static void Print(const Config& config);
 
     private:
         Parser(std::string json_config_path);
@@ -48,8 +47,8 @@ namespace MLTPConfig
         std::string ParseOutputFileName();
         std::string ParseOutputBranchName();
 
-        static void ValidateBranch(const Branch &branch);
-        static void ValidateVar(const Var &var);
+        static void ValidateBranch(const Branch& branch);
+        static void ValidateVar(const Var& var);
 
         const std::string json_config_path_;
         ptree root_;

@@ -1,5 +1,14 @@
 {
     "branches": {
+        "RecEventHeader": {
+            "vars": [
+                {
+                    "inName": "M",
+                    "outName": "M",
+                    "type": "int"
+                }
+            ]
+        },
         "TofHits": {
             "vars": [
                 {
@@ -12,8 +21,7 @@
                     "outName": "qp_tof",
                     "type": "float"
                 }
-            ],
-            "type": "Detector"
+            ]
         },
         "VtxTracks": {
             "vars": [
@@ -42,8 +50,7 @@
                     "outName": "p",
                     "type": "float"
                 }
-            ],
-            "type": "Detector"
+            ]
         },
         "SimParticles": {
             "vars": [
@@ -52,8 +59,7 @@
                     "outName": "phi_sim",
                     "type": "float"
                 }
-            ],
-            "type": "Detector"
+            ]
         }
     },
     "inputFileList": "/lustre/cbm/users/tfic/at_tree_plainer/filelist_test.txt",
