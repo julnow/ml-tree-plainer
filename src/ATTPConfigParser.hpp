@@ -5,7 +5,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-namespace MLTPConfig
+namespace ATTPConfig
 {
     using namespace boost::property_tree;
 

@@ -1,17 +1,17 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "ATTPConfigParser.hpp"
 #include "AnalysisTree/Detector.hpp"
 #include "AnalysisTree/EventHeader.hpp"
 #include "AnalysisTree/Task.hpp"
-#include "MLTPConfigParser.hpp"
 
-namespace MLTP
+namespace ATTP
 {
     class Variable
     {
     public:
-        Variable(MLTPConfig::Var var_config);
+        Variable(ATTPConfig::Var var_config);
 
         void AddField(AnalysisTree::BranchConfig& out_particles);
 

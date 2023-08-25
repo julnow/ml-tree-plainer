@@ -1,9 +1,9 @@
-#include "MLTPConfigParser.hpp"
+#include "ATTPConfigParser.hpp"
 
 #include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 
-namespace MLTPConfig
+namespace ATTPConfig
 {
     using namespace boost::property_tree;
 

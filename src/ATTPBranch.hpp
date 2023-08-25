@@ -1,14 +1,14 @@
 #pragma once
 #include "AnalysisTree/TaskManager.hpp"
-#include "MLTPVariable.hpp"
+#include "ATTPVariable.hpp"
 
-namespace MLTP
+namespace ATTP
 {
     class Branch
     {
     public:
         Branch(
-            MLTPConfig::Branch branch_config,
+            ATTPConfig::Branch branch_config,
             const AnalysisTree::Configuration* atree_config,
             AnalysisTree::BranchConfig& out_branch_config);
 

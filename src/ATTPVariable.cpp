@@ -1,11 +1,11 @@
-#include "MLTPVariable.hpp"
+#include "ATTPVariable.hpp"
 #include <iostream>
 
-namespace MLTP
+namespace ATTP
 {
     namespace at = AnalysisTree;
 
-    Variable::Variable(MLTPConfig::Var var_config) :
+    Variable::Variable(ATTPConfig::Var var_config) :
         in_name_{var_config.in_name},
         out_name_{var_config.out_name},
         type_{var_config.type}

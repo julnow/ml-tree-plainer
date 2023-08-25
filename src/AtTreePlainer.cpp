@@ -1,53 +1,57 @@
-#include "MlTreePlainer.hpp"
+#include "AtTreePlainer.hpp"
 #include "AnalysisTree/TaskManager.hpp"
 
-void MlTreePlainer::Init()
+namespace at = AnalysisTree;
+
+void AtTreePlainer::Init()
 {
-    auto* man = AnalysisTree::TaskManager::GetInstance();
+    auto* man = at::TaskManager::GetInstance();
     auto* chain = man->GetChain();
 
-    // definition of detectors and tracks
-    tofhits_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Hit>*>(
-        chain->GetPointerToBranch("TofHits"));
-    simulated_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Particles*>(
-        chain->GetPointerToBranch("SimParticles"));
-    vtxtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(
-        chain->GetPointerToBranch("VtxTracks"));
-    rec_event_header_ = ANALYSISTREE_UTILS_GET<AnalysisTree::EventHeader*>(
-        chain->GetPointerToBranch("RecEventHeader"));
-    trdtracks_ = ANALYSISTREE_UTILS_GET<AnalysisTree::Detector<AnalysisTree::Track>*>(
-        chain->GetPointerToBranch("TrdTracks"));
-    // definition of matching
-    tof2sim_match_ = chain->GetMatchPointers()
-                         .find(config_->GetMatchName("TofHits", "SimParticles"))
-                         ->second;
-    vtx2tof_match_ = chain->GetMatchPointers()
-                         .find(config_->GetMatchName("VtxTracks", "TofHits"))
-                         ->second;
-    vtx2sim_match_ =
-        chain->GetMatchPointers()
-            .find(config_->GetMatchName("VtxTracks", "SimParticles"))
-            ->second;
-    vtx2trd_match_ = chain->GetMatchPointers()
-                         .find(config_->GetMatchName("VtxTracks", "TrdTracks"))
-                         ->second;
+    {
+        auto tofhits_ptr = chain->GetPointerToBranch("TofHits");
+        auto simulated_ptr = chain->GetPointerToBranch("SimParticles");
+        auto vtxtracks_ptr = chain->GetPointerToBranch("VtxTracks");
+        auto rec_event_header_ptr = chain->GetPointerToBranch("RecEventHeader");
+        auto trdtracks_ptr = chain->GetPointerToBranch("TrdTracks");
 
-    auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
-    // output tree fields (excluding defaults values like momentum etc.)
-    AnalysisTree::BranchConfig out_particles(
-        json_config_.output_branch_name, AnalysisTree::DetType::kParticle);
+        tofhits_ = ANALYSISTREE_UTILS_GET<at::Detector<at::Hit>*>(tofhits_ptr);
+        simulated_ = ANALYSISTREE_UTILS_GET<at::Particles*>(simulated_ptr);
+        vtxtracks_ = ANALYSISTREE_UTILS_GET<at::Detector<at::Track>*>(vtxtracks_ptr);
+        rec_event_header_ = ANALYSISTREE_UTILS_GET<at::EventHeader*>(rec_event_header_ptr);
+        trdtracks_ = ANALYSISTREE_UTILS_GET<at::Detector<at::Track>*>(trdtracks_ptr);
+    }
 
-    auto event_header_config = FindBranch("RecEventHeader");
-    auto tof_config = FindBranch("TofHits");
-    auto vtx_config = FindBranch("VtxTracks");
-    auto sim_config = FindBranch("SimParticles");
-    auto trd_config = FindBranch("TrdTracks");
+    {
+        auto tof2sim_name = config_->GetMatchName("TofHits", "SimParticles");
+        auto vtx2tof_name = config_->GetMatchName("VtxTracks", "TofHits");
+        auto vtx2sim_name = config_->GetMatchName("VtxTracks", "SimParticles");
+        auto vtx2trd_name = config_->GetMatchName("VtxTracks", "TrdTracks");
 
-    event_header_ = new MLTP::Branch(event_header_config, config_, out_particles);
-    tof_ = new MLTP::Branch(tof_config, config_, out_particles);
-    vtx_ = new MLTP::Branch(vtx_config, config_, out_particles);
-    sim_ = new MLTP::Branch(sim_config, config_, out_particles);
-    trd_ = new MLTP::Branch(trd_config, config_, out_particles);
+        auto match_ptrs = chain->GetMatchPointers();
+
+        tof2sim_match_ = match_ptrs.find(tof2sim_name)->second;
+        vtx2tof_match_ = match_ptrs.find(vtx2tof_name)->second;
+        vtx2sim_match_ = match_ptrs.find(vtx2sim_name)->second;
+        vtx2trd_match_ = match_ptrs.find(vtx2trd_name)->second;
+    }
+
+    auto out_config = at::TaskManager::GetInstance()->GetConfig();
+    at::BranchConfig out_particles(json_config_.output_branch_name, at::DetType::kParticle);
+
+    {
+        auto event_header_config = FindBranch("RecEventHeader");
+        auto tof_config = FindBranch("TofHits");
+        auto vtx_config = FindBranch("VtxTracks");
+        auto sim_config = FindBranch("SimParticles");
+        auto trd_config = FindBranch("TrdTracks");
+
+        event_header_ = new ATTP::Branch(event_header_config, config_, out_particles);
+        tof_ = new ATTP::Branch(tof_config, config_, out_particles);
+        vtx_ = new ATTP::Branch(vtx_config, config_, out_particles);
+        sim_ = new ATTP::Branch(sim_config, config_, out_particles);
+        trd_ = new ATTP::Branch(trd_config, config_, out_particles);
+    }
 
     event_header_->AddFields();
     tof_->AddFields();
@@ -60,11 +64,11 @@ void MlTreePlainer::Init()
     InitIndices();
 }
 
-void MlTreePlainer::Exec()
+void AtTreePlainer::Exec()
 {
     plain_branch_->ClearChannels();
 
-    auto out_config = AnalysisTree::TaskManager::GetInstance()->GetConfig();
+    auto out_config = at::TaskManager::GetInstance()->GetConfig();
 
     for(auto& input_particle: *tofhits_)
     {
@@ -84,9 +88,9 @@ void MlTreePlainer::Exec()
                     vtx2sim_match_->GetMatch(matched_particle_vtx_id);
                 if(matched_particle_sim_vtx_id == matched_particle_sim_id)
                 {
-                    namespace at = AnalysisTree;
                     auto& output_particle = plain_branch_->AddChannel(
                         out_config->GetBranchConfig(plain_branch_->GetId()));
+
                     vtx_->SetFields<at::Track>(output_particle, matched_particle_vtx);
                     tof_->SetFields<at::Hit>(output_particle, input_particle);
                     sim_->SetFields<at::Particle>(output_particle, matched_particle_sim);
@@ -107,7 +111,7 @@ void MlTreePlainer::Exec()
     }
 }
 
-void MlTreePlainer::InitIndices()
+void AtTreePlainer::InitIndices()
 {
     event_header_->InitInIndices();
     tof_->InitInIndices();
@@ -133,12 +137,7 @@ void MlTreePlainer::InitIndices()
     trd_->Print();
 }
 
-void MlTreePlainer::SetConfig(MLTPConfig::Config config)
-{
-    json_config_ = config;
-}
-
-MLTPConfig::Branch MlTreePlainer::FindBranch(std::string branch_name)
+ATTPConfig::Branch AtTreePlainer::FindBranch(std::string branch_name)
 {
     for(auto& b: json_config_.branches)
     {

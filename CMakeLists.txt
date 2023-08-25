@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(MLTP CXX)
+project(ATTP CXX)
 if(NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
@@ -47,31 +47,37 @@ include_directories(${CMAKE_SOURCE_DIR} ${AnalysisTree_INCLUDE_DIR})
 
 #************
 set(SOURCES
-  src/MlTreePlainer.cpp
-  src/MLTPConfigParser.cpp
-  src/MLTPVariable.cpp
-  src/MLTPBranch.cpp
+  src/AtTreePlainer.cpp
+  src/ATTPConfigParser.cpp
+  src/ATTPVariable.cpp
+  src/ATTPBranch.cpp
   )
 
-string(REPLACE ".cpp" ".hpp" HEADERS "${SOURCES}")
-add_library(MLTP SHARED ${SOURCES} G__MLTP.cxx)
+set(HEADERS
+  src/AtTreePlainer.hpp
+  src/ATTPConfigParser.hpp
+  src/ATTPVariable.hpp
+  src/ATTPBranch.hpp
+  )
+
+add_library(ATTP SHARED ${SOURCES} G__ATTP.cxx)
         
 if(ROOT_FOUND)
-  ROOT_GENERATE_DICTIONARY(G__MLTP ${HEADERS} LINKDEF src/MLTPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+  ROOT_GENERATE_DICTIONARY(G__ATTP ${HEADERS} LINKDEF src/ATTPLinkDef.h OPTIONS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
   include_directories(${CMAKE_SOURCE_DIR})
-  target_link_libraries(MLTP ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
+  target_link_libraries(ATTP ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
 endif(ROOT_FOUND)  
-add_target_property(MLTP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+add_target_property(ATTP COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
 
 find_package(Boost 1.78 REQUIRED COMPONENTS json)
-target_link_libraries(MLTP Boost::boost Boost::json)
+target_link_libraries(ATTP Boost::boost Boost::json)
 
-add_executable(main src/main.cpp)
-add_dependencies(main MLTP)
-add_target_property(main COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
-target_link_libraries(main MLTP)
+add_executable(at_tree_plainer src/main.cpp)
+add_dependencies(at_tree_plainer ATTP)
+add_target_property(at_tree_plainer COMPILE_FLAGS "-DDO_TPCCATRACKER_EFF_PERFORMANCE")
+target_link_libraries(at_tree_plainer ATTP)
 
-install(TARGETS MLTP EXPORT MLTPTargets
+install(TARGETS ATTP EXPORT ATTPTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
@@ -87,7 +93,7 @@ install(
         Devel
 )
 
-set(PCM_FILE_NAME libMLTP)
+set(PCM_FILE_NAME libATTP)
 
 install(
         FILES
@@ -97,42 +103,42 @@ install(
         OPTIONAL
 )
 
-install (TARGETS main RUNTIME DESTINATION bin)
+install (TARGETS at_tree_plainer RUNTIME DESTINATION bin)
 #************
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/ATTP/ATTPConfigVersion.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 
-export(EXPORT MLTPTargets
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPTargets.cmake")
+export(EXPORT ATTPTargets
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/ATTP/ATTPTargets.cmake")
 
-message(STATUS "MLTPTargets: ${MLTPTargets}")
+message(STATUS "ATTPTargets: ${ATTPTargets}")
         
-set(ConfigPackageLocation lib/cmake/MLTP)
+set(ConfigPackageLocation lib/cmake/ATTP)
 
-set(MLTP_INCLUDE_DIR "include")
-set(MLTP_LIBRARY_DIR "lib")
+set(ATTP_INCLUDE_DIR "include")
+set(ATTP_LIBRARY_DIR "lib")
 
 configure_package_config_file(
-        src/MLTPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake
+        src/ATTPConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/ATTP/ATTPConfig.cmake
         INSTALL_DESTINATION ${ConfigPackageLocation}
-        PATH_VARS MLTP_INCLUDE_DIR MLTP_LIBRARY_DIR
+        PATH_VARS ATTP_INCLUDE_DIR ATTP_LIBRARY_DIR
 )
 
-install(EXPORT MLTPTargets
+install(EXPORT ATTPTargets
         FILE
-        MLTPTargets.cmake
+        ATTPTargets.cmake
         DESTINATION
         ${ConfigPackageLocation}
         )
 
 install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/MLTP/MLTPConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/ATTP/ATTPConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/ATTP/ATTPConfigVersion.cmake"
         DESTINATION
         ${ConfigPackageLocation}
         COMPONENT

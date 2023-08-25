@@ -1,10 +1,10 @@
-#include "MLTPBranch.hpp"
+#include "ATTPBranch.hpp"
 #include <array>
 
-namespace MLTP
+namespace ATTP
 {
     Branch::Branch(
-        MLTPConfig::Branch branch_config,
+        ATTPConfig::Branch branch_config,
         const AnalysisTree::Configuration* atree_config,
         AnalysisTree::BranchConfig& out_branch_config) :
         in_branch_config_{Branch::ValidateBranch(branch_config.name, atree_config)},
